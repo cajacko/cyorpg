@@ -1,9 +1,27 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
+import StoryList from './components/StoryList';
 import * as serviceWorker from './serviceWorker';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(
+  <StoryList
+    stories={[
+      {
+        key: '1',
+        text: 'Story 1',
+      },
+      {
+        key: '2',
+        text: 'Story 2',
+      },
+      {
+        key: '3',
+        text: 'Story 3',
+      },
+    ]}
+  />,
+  document.getElementById('root')
+);
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
