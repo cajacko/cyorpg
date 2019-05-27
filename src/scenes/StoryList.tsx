@@ -5,10 +5,6 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import StoryList from '../components/StoryList';
 
-interface IProps {
-  children: React.ReactNode;
-}
-
 const useStyles = makeStyles(
   createStyles({
     card: {
@@ -20,7 +16,7 @@ const useStyles = makeStyles(
 /**
  * The scene for showing a list of stories
  */
-const StoryListScene: React.FC<IProps> = ({ children }: IProps) => {
+const StoryListScene: React.FC = () => {
   const classes = useStyles();
 
   return (

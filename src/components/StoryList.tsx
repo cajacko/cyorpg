@@ -50,8 +50,8 @@ const StoryList: React.FC<IProps> = ({ stories, history }: IProps) => {
         <ExpansionPanel key={id} expanded={expanded === id} onChange={handleChange(id)}>
           <ExpansionPanelSummary
             expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1a-content"
-            id="panel1a-header"
+            aria-controls={`StoryList__Content--${id}`}
+            id={`StoryList__Summary--${id}`}
           >
             <Typography>{text}</Typography>
           </ExpansionPanelSummary>
