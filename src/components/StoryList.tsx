@@ -1,4 +1,5 @@
 import React from 'react';
+import { createStyles, makeStyles } from '@material-ui/core/styles';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
@@ -16,11 +17,23 @@ interface IProps extends RouteComponentProps {
   }>;
 }
 
+const useStyles = makeStyles(
+  createStyles({
+    details: {
+      flexDirection: 'column',
+    },
+    buttonContainer: {
+      marginTop: 10,
+    },
+  })
+);
+
 /**
  * Render a list of stories
  */
 const StoryList: React.FC<IProps> = ({ stories, history }: IProps) => {
   const [expanded, setExpanded] = React.useState<string | false>(false);
+  const classes = useStyles();
 
   /**
    * Change which panel is expanded
@@ -42,9 +55,9 @@ const StoryList: React.FC<IProps> = ({ stories, history }: IProps) => {
           >
             <Typography>{text}</Typography>
           </ExpansionPanelSummary>
-          <ExpansionPanelDetails style={{ flexDirection: 'column' }}>
+          <ExpansionPanelDetails className={classes.details}>
             <Typography>{description}</Typography>
-            <div style={{ marginTop: 10 }}>
+            <div className={classes.buttonContainer}>
               <Button variant="contained" color="primary" onClick={() => history.push(route)}>
                 Play Story
               </Button>
