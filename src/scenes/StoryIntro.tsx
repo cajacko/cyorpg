@@ -1,5 +1,6 @@
 /* eslint react/no-array-index-key: 0 */
 import React from 'react';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
@@ -17,10 +18,14 @@ const useStyles = makeStyles(
   })
 );
 
+type IProps = RouteComponentProps<{
+  storyId: string;
+}>;
+
 /**
  * Show the instructions for starting a story
  */
-const StoryIntro: React.FC = () => {
+const StoryIntroScene: React.FC<IProps> = ({ history, match }: IProps) => {
   const [expanded, setExpanded] = React.useState<number | false>(false);
   const classes = useStyles();
 
@@ -54,11 +59,16 @@ const StoryIntro: React.FC = () => {
           </ExpansionPanelDetails>
         </ExpansionPanel>
       ))}
-      <Button color="primary" variant="contained" className={classes.content}>
+      <Button
+        color="primary"
+        variant="contained"
+        className={classes.content}
+        onClick={() => history.push(`/story/${match.params.storyId}/step/0`)}
+      >
         We&apos;re ready, let&apos;s go
       </Button>
     </React.Fragment>
   );
 };
 
-export default StoryIntro;
+export default withRouter(StoryIntroScene);

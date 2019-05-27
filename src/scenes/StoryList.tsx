@@ -35,25 +35,25 @@ const StoryListScene: React.FC = () => {
             id: '1',
             text: 'Story 1',
             description: 'Hello there',
-            route: '/story/1',
+            route: '/story/1/instructions',
           },
           {
             id: '2',
             text: 'Story 2',
             description: 'Hello there',
-            route: '/story/1',
+            route: '/story/1/instructions',
           },
           {
             id: '3',
             text: 'Story 3',
             description: 'Hello there',
-            route: '/story/1',
+            route: '/story/1/instructions',
           },
           {
             id: '4',
             text: 'Story 4',
             description: 'Hello there',
-            route: '/story/1',
+            route: '/story/1/instructions',
           },
         ]}
       />
