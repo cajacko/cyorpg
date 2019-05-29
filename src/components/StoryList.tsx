@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
@@ -7,8 +8,13 @@ import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Button from '@material-ui/core/Button';
+import { AppState } from '../store';
 
-interface IProps extends RouteComponentProps {
+interface IPassedProps {
+  stories: string[];
+}
+
+interface IStateProps {
   stories: Array<{
     text: string;
     id: string;
@@ -16,6 +22,8 @@ interface IProps extends RouteComponentProps {
     route: string;
   }>;
 }
+
+interface IProps extends RouteComponentProps, IStateProps {}
 
 const useStyles = makeStyles(
   createStyles({
@@ -69,4 +77,28 @@ const StoryList: React.FC<IProps> = ({ stories, history }: IProps) => {
   );
 };
 
-export default withRouter(StoryList);
+/**
+ * Get the stories
+ */
+const mapStateToProps = (state: AppState, props: IPassedProps): IStateProps => {
+  const stories: IStateProps['stories'] = [];
+
+  props.stories.forEach((id) => {
+    const story = state.storiesById[id];
+
+    if (story) {
+      stories.push({
+        description: story.description,
+        id: story.id,
+        text: story.title,
+        route: `/story/${story.id}/instructions`,
+      });
+    }
+  });
+
+  return {
+    stories,
+  };
+};
+
+export default withRouter(connect(mapStateToProps)(StoryList));

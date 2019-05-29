@@ -1,5 +1,6 @@
 /* eslint react/no-array-index-key: 0 */
 import React from 'react';
+import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
@@ -8,6 +9,7 @@ import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import { AppState } from '../store';
 import storyInstructions from '../config/storyInstructions';
 
 const useStyles = makeStyles(
@@ -18,14 +20,21 @@ const useStyles = makeStyles(
   })
 );
 
-type IProps = RouteComponentProps<{
+interface IStateProps {
+  startingStoryPart: string | null;
+  noStory: boolean;
+}
+
+type IRouteProps = RouteComponentProps<{
   storyId: string;
 }>;
+
+interface IProps extends IRouteProps, IStateProps {}
 
 /**
  * Show the instructions for starting a story
  */
-const StoryIntroScene: React.FC<IProps> = ({ history, match }: IProps) => {
+const StoryIntroScene: React.FC<IProps> = ({ history, match, startingStoryPart }: IProps) => {
   const [expanded, setExpanded] = React.useState<number | false>(false);
   const classes = useStyles();
 
@@ -63,7 +72,7 @@ const StoryIntroScene: React.FC<IProps> = ({ history, match }: IProps) => {
         color="primary"
         variant="contained"
         className={classes.content}
-        onClick={() => history.push(`/story/${match.params.storyId}/step/TODO:`)}
+        onClick={() => history.push(`/story/${match.params.storyId}/step/${startingStoryPart}`)}
       >
         We&apos;re ready, let&apos;s go
       </Button>
@@ -71,4 +80,26 @@ const StoryIntroScene: React.FC<IProps> = ({ history, match }: IProps) => {
   );
 };
 
-export default withRouter(StoryIntroScene);
+/**
+ * Grab the starting story part from the state
+ */
+const mapStateToProps = (state: AppState, props: IRouteProps): IStateProps => {
+  const { storyId } = props.match.params;
+  const story = state.storiesById[storyId];
+
+  if (!story) {
+    return {
+      noStory: true,
+      startingStoryPart: null,
+    };
+  }
+
+  return {
+    noStory: false,
+    startingStoryPart: story.startingStoryPart,
+  };
+};
+
+export default withRouter(
+  connect<IStateProps, {}, IRouteProps, AppState>(mapStateToProps)(StoryIntroScene)
+);

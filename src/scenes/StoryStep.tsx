@@ -1,4 +1,6 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -7,6 +9,19 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import HelpIcon from '@material-ui/icons/Help';
 import Modal from '@material-ui/core/Modal';
+import { IStoryPart, IAction } from '../store/types';
+import { AppState } from '../store';
+
+type IRouteProps = RouteComponentProps<{
+  stepId: string;
+  storyId: string;
+}>;
+
+interface IStateProps extends Partial<IStoryPart> {
+  noStoryPart: boolean;
+}
+
+interface IProps extends IRouteProps, IStateProps {}
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -38,30 +53,12 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-// TODO:
-const data = {
-  title: 'Surprise!',
-  body: 'Story details',
-  actions: [
-    {
-      id: '1',
-      text: 'Go to the mall',
-    },
-    {
-      id: '2',
-      text: 'Go to the mall',
-    },
-    {
-      id: '3',
-      text: 'Go to the mall',
-    },
-  ],
-};
-
 /**
  *  Show a single step in the story
  */
-const StoryStep: React.FC = () => {
+const StoryStep: React.FC<IProps> = ({
+  headline, content, actions, history, match,
+}: IProps) => {
   const classes = useStyles();
 
   const [open, setOpen] = React.useState(false);
@@ -80,6 +77,17 @@ const StoryStep: React.FC = () => {
     setOpen(false);
   };
 
+  /**
+   * Decide what action to do
+   */
+  const action = (actionProps: IAction) => () => {
+    if (actionProps.willFinish) {
+      history.push('/');
+    } else if (actionProps.goToStoryPart) {
+      history.push(`/story/${match.params.storyId}/step/${actionProps.goToStoryPart}`);
+    }
+  };
+
   const helpButton = (
     <IconButton className={classes.help} aria-label="Help" onClick={handleOpen}>
       <HelpIcon />
@@ -90,19 +98,26 @@ const StoryStep: React.FC = () => {
     <Card className={classes.card}>
       <CardContent>
         {helpButton}
-        {!!data.title && <Typography variant="h5">{data.title}</Typography>}
+        {!!headline && <Typography variant="h5">{headline}</Typography>}
         <Typography variant="body1" component="p">
-          {data.body}
+          {content}
         </Typography>
         <div>
           {helpButton}
           <Typography variant="h5">Available Actions</Typography>
           <div className={classes.actions}>
-            {data.actions.map(({ id, text }) => (
-              <Button key={id} variant="contained" color="secondary" className={classes.button}>
-                {text}
-              </Button>
-            ))}
+            {!!actions
+              && actions.map((actionProps, i) => (
+                <Button
+                  key={i}
+                  variant="contained"
+                  color="secondary"
+                  className={classes.button}
+                  onClick={action(actionProps)}
+                >
+                  {actionProps.text}
+                </Button>
+              ))}
           </div>
         </div>
       </CardContent>
@@ -138,4 +153,18 @@ const StoryStep: React.FC = () => {
   );
 };
 
-export default StoryStep;
+/**
+ * Grab the story part
+ */
+const mapStateToProps = (state: AppState, props: IRouteProps): IStateProps => {
+  const storyPart = state.storyPartsById[props.match.params.stepId];
+
+  if (!storyPart) return { noStoryPart: true };
+
+  return {
+    ...storyPart,
+    noStoryPart: false,
+  };
+};
+
+export default withRouter(connect(mapStateToProps)(StoryStep));

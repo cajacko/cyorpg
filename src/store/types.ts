@@ -1,12 +1,16 @@
-interface IAction {
+interface IAction1 {
   goToStoryPart: string;
   text: string;
+  willFinish?: undefined;
 }
 
-interface IAction {
+interface IAction2 {
+  goToStoryPart?: undefined;
   willFinish: true;
   text: string;
 }
+
+export type IAction = IAction1 | IAction2;
 
 export interface IStoryPart {
   id: string;
