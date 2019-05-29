@@ -9,7 +9,11 @@ const persistConfig = {
   storage,
 };
 
-const persistedReducer = persistReducer(persistConfig, combineReducers(reducers));
+const rootReducer = combineReducers(reducers);
+
+export type AppState = ReturnType<typeof rootReducer>;
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export default () => {
   const store = createStore(persistedReducer, applyMiddleware(logger));

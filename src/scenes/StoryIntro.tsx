@@ -63,7 +63,7 @@ const StoryIntroScene: React.FC<IProps> = ({ history, match }: IProps) => {
         color="primary"
         variant="contained"
         className={classes.content}
-        onClick={() => history.push(`/story/${match.params.storyId}/step/0`)}
+        onClick={() => history.push(`/story/${match.params.storyId}/step/TODO:`)}
       >
         We&apos;re ready, let&apos;s go
       </Button>

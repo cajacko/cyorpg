@@ -24,13 +24,13 @@ const StoryListScene: React.FC = () => {
       <Card className={classes.card}>
         <CardContent>
           <Typography variant="body1" component="p">
-            Welcome to CYORPG! A choose your own adventure role playing game for 2+ people. To get
-            started pick one of these stories to play.
+            TODO:
           </Typography>
         </CardContent>
       </Card>
       <StoryList
         stories={[
+          // TODO:
           {
             id: '1',
             text: 'Story 1',
