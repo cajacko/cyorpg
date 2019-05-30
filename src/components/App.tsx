@@ -3,7 +3,6 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { PersistGate } from 'redux-persist/integration/react';
 import { Provider } from 'react-redux';
-import * as AppBar from '../context/AppBar';
 import Routes from './Routes';
 import getStore from '../store';
 
@@ -17,9 +16,7 @@ const App: React.FC = () => (
     <PersistGate loading={null} persistor={persistor}>
       <Router>
         <CssBaseline />
-        <AppBar.Provider>
-          <Routes />
-        </AppBar.Provider>
+        <Routes />
       </Router>
     </PersistGate>
   </Provider>

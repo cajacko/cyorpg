@@ -7,6 +7,8 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
+import MenuIcon from '@material-ui/icons/Menu';
+import Drawer from '../components/Drawer';
 
 /**
  * This file is inspired by the way react native app bar works
@@ -18,7 +20,7 @@ interface IProviderProps extends RouteComponentProps {
 
 interface IAppBarProps {
   title?: string;
-  showGoBack?: boolean;
+  leftButton?: 'BACK' | 'MENU';
   rightButton?: {
     action: () => void;
     text: string;
@@ -38,9 +40,6 @@ const Context = React.createContext<IContext>({
 });
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
-  root: {
-    flexGrow: 1,
-  },
   menuButton: {
     marginRight: theme.spacing(2),
   },
@@ -56,6 +55,7 @@ const AppBar: React.FC<IProviderProps> = ({ children, history }: IProviderProps)
   const classes = useStyles();
   const [shouldShow, setShouldShow] = React.useState(false);
   const [props, setProps] = React.useState<IAppBarProps>({});
+  const [openDrawer, setOpenDrawer] = React.useState(false);
 
   const context: IContext = {
     removeConsumer: () => {
@@ -77,40 +77,62 @@ const AppBar: React.FC<IProviderProps> = ({ children, history }: IProviderProps)
     },
   };
 
-  const { showGoBack, title, rightButton } = props;
+  const { leftButton, title, rightButton } = props;
+
+  let leftButtonComponent;
+
+  switch (leftButton) {
+    case 'BACK':
+      leftButtonComponent = (
+        <IconButton
+          edge="start"
+          className={classes.menuButton}
+          color="inherit"
+          aria-label="Menu"
+          onClick={history.goBack}
+        >
+          <KeyboardArrowLeft />
+        </IconButton>
+      );
+      break;
+    case 'MENU':
+      leftButtonComponent = (
+        <IconButton
+          edge="start"
+          className={classes.menuButton}
+          color="inherit"
+          aria-label="Menu"
+          onClick={() => setOpenDrawer(true)}
+        >
+          <MenuIcon />
+        </IconButton>
+      );
+      break;
+    default:
+      break;
+  }
 
   return (
     <Context.Provider value={context}>
       {shouldShow && (
-        <div className={classes.root}>
-          <UIAppBar position="static">
-            <Toolbar>
-              {!!showGoBack && (
-                <IconButton
-                  edge="start"
-                  className={classes.menuButton}
-                  color="inherit"
-                  aria-label="Menu"
-                  onClick={history.goBack}
-                >
-                  <KeyboardArrowLeft />
-                </IconButton>
-              )}
-              {!!title && (
-                <Typography variant="h6" className={classes.title}>
-                  {title}
-                </Typography>
-              )}
-              {!!rightButton && (
-                <Button color="inherit" onClick={rightButton.action}>
-                  {rightButton.text}
-                </Button>
-              )}
-            </Toolbar>
-          </UIAppBar>
-        </div>
+        <UIAppBar position="static">
+          <Toolbar>
+            {!!leftButtonComponent && leftButtonComponent}
+            {!!title && (
+              <Typography variant="h6" className={classes.title}>
+                {title}
+              </Typography>
+            )}
+            {!!rightButton && (
+              <Button color="inherit" onClick={rightButton.action}>
+                {rightButton.text}
+              </Button>
+            )}
+          </Toolbar>
+        </UIAppBar>
       )}
       {children}
+      <Drawer open={openDrawer} onClose={() => setOpenDrawer(false)} />
     </Context.Provider>
   );
 };

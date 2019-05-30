@@ -11,18 +11,20 @@ import * as AppBar from '../context/AppBar';
  * All the routes for the app
  */
 const Routes: React.FC<RouteComponentProps> = ({ history }: RouteComponentProps) => (
-  <Switch>
-    <Route path="/story/:storyId">
-      <AppBar.Consumer
-        title="Story"
-        showGoBack
-        rightButton={{ text: 'Exit', action: () => history.push('/') }}
-      />
-      <Route path="/story/:storyId/step/:stepId" component={StoryStep} exact />
-      <Route path="/story/:storyId/instructions" component={StoryIntroScene} exact />
-    </Route>
-    <Route component={StoryListScene} />
-  </Switch>
+  <AppBar.Provider>
+    <Switch>
+      <Route path="/story/:storyId">
+        <AppBar.Consumer
+          title="Story"
+          leftButton="BACK"
+          rightButton={{ text: 'Exit', action: () => history.push('/') }}
+        />
+        <Route path="/story/:storyId/step/:stepId" component={StoryStep} exact />
+        <Route path="/story/:storyId/instructions" component={StoryIntroScene} exact />
+      </Route>
+      <Route component={StoryListScene} />
+    </Switch>
+  </AppBar.Provider>
 );
 
 export default withRouter(Routes);
