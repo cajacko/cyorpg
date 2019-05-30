@@ -6,6 +6,7 @@ import StoryListScene from '../scenes/StoryList';
 import StoryIntroScene from '../scenes/StoryIntro';
 import StoryStep from '../scenes/StoryStep';
 import * as AppBar from '../context/AppBar';
+import AddStory from '../scenes/AddStory';
 
 /**
  * All the routes for the app
@@ -22,6 +23,7 @@ const Routes: React.FC<RouteComponentProps> = ({ history }: RouteComponentProps)
         <Route path="/story/:storyId/step/:stepId" component={StoryStep} exact />
         <Route path="/story/:storyId/instructions" component={StoryIntroScene} exact />
       </Route>
+      <Route path="/add" component={AddStory} />
       <Route component={StoryListScene} />
     </Switch>
   </AppBar.Provider>
