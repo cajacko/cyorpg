@@ -1,17 +1,23 @@
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import {
+  Route, Switch, withRouter, RouteComponentProps,
+} from 'react-router-dom';
 import StoryListScene from '../scenes/StoryList';
 import StoryIntroScene from '../scenes/StoryIntro';
 import StoryStep from '../scenes/StoryStep';
-import StoryNav from './StoryNav';
+import * as AppBar from '../context/AppBar';
 
 /**
  * All the routes for the app
  */
-const Routes: React.FC = () => (
+const Routes: React.FC<RouteComponentProps> = ({ history }: RouteComponentProps) => (
   <Switch>
     <Route path="/story/:storyId">
-      <StoryNav />
+      <AppBar.Consumer
+        title="Story"
+        showGoBack
+        rightButton={{ text: 'Exit', action: () => history.push('/') }}
+      />
       <Route path="/story/:storyId/step/:stepId" component={StoryStep} exact />
       <Route path="/story/:storyId/instructions" component={StoryIntroScene} exact />
     </Route>
@@ -19,4 +25,4 @@ const Routes: React.FC = () => (
   </Switch>
 );
 
-export default Routes;
+export default withRouter(Routes);

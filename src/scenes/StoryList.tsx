@@ -6,6 +6,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import StoryList from '../components/StoryList';
 import { AppState } from '../store';
+import * as AppBar from '../context/AppBar';
 
 const useStyles = makeStyles(
   createStyles({
@@ -28,6 +29,7 @@ const StoryListScene: React.FC<IProps> = ({ stories, welcomeText }: IProps) => {
 
   return (
     <React.Fragment>
+      <AppBar.Consumer title="Stories" />
       <Card className={classes.card}>
         <CardContent>
           <Typography variant="body1" component="p">
