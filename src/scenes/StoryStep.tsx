@@ -157,7 +157,11 @@ const StoryStep: React.FC<IProps> = ({
  * Grab the story part
  */
 const mapStateToProps = (state: AppState, props: IRouteProps): IStateProps => {
-  const storyPart = state.storyPartsById[props.match.params.stepId];
+  const story = state.storiesById[props.match.params.storyId];
+
+  if (!story) return { noStoryPart: true };
+
+  const storyPart = story.storyParts[props.match.params.stepId];
 
   if (!storyPart) return { noStoryPart: true };
 

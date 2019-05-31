@@ -21,19 +21,21 @@ export interface IStoryPart {
   actions: IAction[];
 }
 
+export interface IMap<V> {
+  [key: string]: V | undefined;
+}
+
 export interface IStory {
   id: string;
   title: string;
   description: string;
   startingStoryPart: string;
-}
-
-export interface IMap<V> {
-  [key: string]: V | undefined;
+  storyParts: IMap<IStoryPart>;
 }
 
 export const SAVE_STORY_PROP = 'SAVE_STORY_PROP';
 export const SAVE_DRAFT_STORY = 'SAVE_DRAFT_STORY';
+export const DELETE_STORY = 'DELETE_STORY';
 
 export type IStoryProp = 'title' | 'description';
 
@@ -54,6 +56,13 @@ export interface ISaveDraftStoryAction {
   };
 }
 
-export type Actions = ISaveStoryPropAction<IStoryProp> | ISaveDraftStoryAction;
+export interface IDeleteStoryAction {
+  type: typeof DELETE_STORY;
+  payload: {
+    storyId: string;
+  };
+}
+
+export type Actions = ISaveStoryPropAction<IStoryProp> | ISaveDraftStoryAction | IDeleteStoryAction;
 
 export type Dispatch = RDispatch<Actions>;

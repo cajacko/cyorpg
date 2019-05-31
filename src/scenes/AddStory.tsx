@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import { saveStoryProp } from '../store/storiesById/actions';
+import { saveStoryProp, deleteStory as deleteStoryAction } from '../store/storiesById/actions';
 import { saveDraftStory } from '../store/draftStoryId/actions';
 import * as AppBar from '../context/AppBar';
 import { IStory, Dispatch, IStoryProp } from '../store/types';
@@ -29,6 +29,7 @@ interface IStateProps {
 interface IDispatchProps {
   saveProp: <P extends IStoryProp>(storyId: string | null, key: P, value: IStory[P]) => void;
   save: (storyId: string) => void;
+  deleteStory: (storyId: string) => void;
 }
 
 interface IProps extends IStateProps, IDispatchProps, RouteComponentProps {}
@@ -43,6 +44,7 @@ const AddStory: React.FC<IProps> = ({
   description,
   storyId,
   save,
+  deleteStory,
 }: IProps) => {
   const classes = useStyles();
 
@@ -61,9 +63,26 @@ const AddStory: React.FC<IProps> = ({
     history.push('/');
   };
 
+  /**
+   * Delete the story
+   */
+  const onDelete = () => {
+    if (!storyId) return;
+
+    deleteStory(storyId);
+    history.push('/');
+  };
+
   return (
     <div>
-      <AppBar.Consumer title="Add Story" leftButton="BACK" />
+      <AppBar.Consumer
+        title="Add Story"
+        leftButton="BACK"
+        rightButton={{
+          text: 'Delete',
+          action: onDelete,
+        }}
+      />
       <form className={classes.container} noValidate autoComplete="off">
         <TextField
           value={title}
@@ -128,7 +147,8 @@ const mapStateToProps = (state: AppState): IStateProps => {
  */
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => ({
   saveProp: (storyId, key, value) => dispatch(saveStoryProp(storyId, key, value)),
-  save: (storyId: string) => dispatch(saveDraftStory(storyId)),
+  save: storyId => dispatch(saveDraftStory(storyId)),
+  deleteStory: storyId => dispatch(deleteStoryAction(storyId)),
 });
 
 export default withRouter(

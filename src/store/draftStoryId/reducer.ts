@@ -9,6 +9,7 @@ const defaultState = 'draft-story';
  */
 const reducer = (state: IState = defaultState, action: Actions): IState => {
   switch (action.type) {
+    case 'DELETE_STORY':
     case 'SAVE_DRAFT_STORY':
       return defaultState;
 

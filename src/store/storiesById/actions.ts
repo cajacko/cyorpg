@@ -1,6 +1,11 @@
 import uuid from 'uuid';
 import {
-  IStory, ISaveStoryPropAction, IStoryProp, SAVE_STORY_PROP,
+  IStory,
+  ISaveStoryPropAction,
+  IStoryProp,
+  SAVE_STORY_PROP,
+  IDeleteStoryAction,
+  DELETE_STORY,
 } from '../types';
 
 /**
@@ -20,6 +25,18 @@ export function saveStoryProp<P extends IStoryProp>(
       storyId: id,
       key,
       value,
+    },
+  };
+}
+
+/**
+ * Delete a story
+ */
+export function deleteStory(storyId: string): IDeleteStoryAction {
+  return {
+    type: DELETE_STORY,
+    payload: {
+      storyId,
     },
   };
 }
