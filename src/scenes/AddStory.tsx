@@ -7,7 +7,7 @@ import Button from '@material-ui/core/Button';
 import {
   saveStoryProp,
   deleteStory as deleteStoryAction,
-  saveDraftStory,
+  saveStory,
 } from '../store/storiesById/actions';
 import * as AppBar from '../context/AppBar';
 import { IStory, Dispatch, IStoryProp } from '../store/types';
@@ -131,7 +131,7 @@ const mapStateToProps = (
     },
   }: RouteProps
 ): IStateProps => {
-  const story = state.storiesById[storyId];
+  const story = state.editedStoriesById[storyId] || state.storiesById[storyId];
 
   if (!story) {
     return {
@@ -158,7 +158,7 @@ const mapDispatchToProps = (
   }: RouteProps
 ): IDispatchProps => ({
   saveProp: (key, value) => dispatch(saveStoryProp(storyId, key, value)),
-  save: () => dispatch(saveDraftStory(storyId)),
+  save: () => dispatch(saveStory(storyId)),
   deleteStory: () => dispatch(deleteStoryAction(storyId)),
 });
 

@@ -16,25 +16,11 @@ const reducer = (state: IState = defaultState, action: Actions): IState => {
       return newState;
     }
 
-    case 'SAVE_STORY_PROP': {
-      const { storyId, key, value } = action.payload;
-
-      const story: IStory = state[storyId] || {
-        id: storyId,
-        title: '',
-        description: '',
-        startingStoryPart: 'null',
-        storyParts: {},
-      };
-
+    case 'SAVE_STORY':
       return {
         ...state,
-        [storyId]: {
-          ...story,
-          [key]: value,
-        },
+        [action.payload.id]: action.payload,
       };
-    }
 
     default:
       return state;

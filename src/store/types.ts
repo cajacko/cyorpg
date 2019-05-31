@@ -34,7 +34,7 @@ export interface IStory {
 }
 
 export const SAVE_STORY_PROP = 'SAVE_STORY_PROP';
-export const SAVE_DRAFT_STORY = 'SAVE_DRAFT_STORY';
+export const SAVE_STORY = 'SAVE_STORY';
 export const DELETE_STORY = 'DELETE_STORY';
 
 export type IStoryProp = 'title' | 'description';
@@ -45,14 +45,13 @@ export interface ISaveStoryPropAction<P extends IStoryProp> {
     storyId: string;
     key: P;
     value: IStory[P];
+    story?: IStory;
   };
 }
 
-export interface ISaveDraftStoryAction {
-  type: typeof SAVE_DRAFT_STORY;
-  payload: {
-    storyId: string;
-  };
+export interface ISaveStoryAction {
+  type: typeof SAVE_STORY;
+  payload: IStory;
 }
 
 export interface IDeleteStoryAction {
@@ -62,6 +61,6 @@ export interface IDeleteStoryAction {
   };
 }
 
-export type Actions = ISaveStoryPropAction<IStoryProp> | ISaveDraftStoryAction | IDeleteStoryAction;
+export type Actions = ISaveStoryPropAction<IStoryProp> | ISaveStoryAction | IDeleteStoryAction;
 
 export type Dispatch = RDispatch<Actions>;
