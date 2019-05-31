@@ -4,8 +4,11 @@ import { connect } from 'react-redux';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import { saveStoryProp, deleteStory as deleteStoryAction } from '../store/storiesById/actions';
-import { saveDraftStory } from '../store/draftStoryId/actions';
+import {
+  saveStoryProp,
+  deleteStory as deleteStoryAction,
+  saveDraftStory,
+} from '../store/storiesById/actions';
 import * as AppBar from '../context/AppBar';
 import { IStory, Dispatch, IStoryProp } from '../store/types';
 import { AppState } from '../store';
@@ -20,19 +23,22 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
   },
 }));
 
+type RouteProps = RouteComponentProps<{
+  storyId: string;
+}>;
+
 interface IStateProps {
   title: string;
   description: string;
-  storyId: string | null;
 }
 
 interface IDispatchProps {
-  saveProp: <P extends IStoryProp>(storyId: string | null, key: P, value: IStory[P]) => void;
-  save: (storyId: string) => void;
-  deleteStory: (storyId: string) => void;
+  saveProp: <P extends IStoryProp>(key: P, value: IStory[P]) => void;
+  save: () => void;
+  deleteStory: () => void;
 }
 
-interface IProps extends IStateProps, IDispatchProps, RouteComponentProps {}
+interface IProps extends IStateProps, IDispatchProps, RouteProps {}
 
 /**
  * Add a story
@@ -42,7 +48,6 @@ const AddStory: React.FC<IProps> = ({
   saveProp,
   title,
   description,
-  storyId,
   save,
   deleteStory,
 }: IProps) => {
@@ -51,15 +56,13 @@ const AddStory: React.FC<IProps> = ({
   /**
    * Handle a value change
    */
-  const handleChange = (key: IStoryProp) => (event: React.ChangeEvent<HTMLInputElement>) => saveProp(storyId, key, event.target.value);
+  const handleChange = (key: IStoryProp) => (event: React.ChangeEvent<HTMLInputElement>) => saveProp(key, event.target.value);
 
   /**
    * Save the draft story
    */
   const onSave = () => {
-    if (!storyId) return;
-
-    save(storyId);
+    save();
     history.push('/');
   };
 
@@ -67,9 +70,7 @@ const AddStory: React.FC<IProps> = ({
    * Delete the story
    */
   const onDelete = () => {
-    if (!storyId) return;
-
-    deleteStory(storyId);
+    deleteStory();
     history.push('/');
   };
 
@@ -122,33 +123,43 @@ const AddStory: React.FC<IProps> = ({
 /**
  * Grab the draft story from the state
  */
-const mapStateToProps = (state: AppState): IStateProps => {
-  const storyId = state.draftStoryId;
-
+const mapStateToProps = (
+  state: AppState,
+  {
+    match: {
+      params: { storyId },
+    },
+  }: RouteProps
+): IStateProps => {
   const story = state.storiesById[storyId];
 
   if (!story) {
     return {
       title: '',
       description: '',
-      storyId: null,
     };
   }
 
   return {
     title: story.title,
     description: story.description,
-    storyId: story.id,
   };
 };
 
 /**
  * Map the save draft story prop to the component
  */
-const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => ({
-  saveProp: (storyId, key, value) => dispatch(saveStoryProp(storyId, key, value)),
-  save: storyId => dispatch(saveDraftStory(storyId)),
-  deleteStory: storyId => dispatch(deleteStoryAction(storyId)),
+const mapDispatchToProps = (
+  dispatch: Dispatch,
+  {
+    match: {
+      params: { storyId },
+    },
+  }: RouteProps
+): IDispatchProps => ({
+  saveProp: (key, value) => dispatch(saveStoryProp(storyId, key, value)),
+  save: () => dispatch(saveDraftStory(storyId)),
+  deleteStory: () => dispatch(deleteStoryAction(storyId)),
 });
 
 export default withRouter(

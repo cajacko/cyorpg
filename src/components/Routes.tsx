@@ -14,6 +14,8 @@ import AddStory from '../scenes/AddStory';
 const Routes: React.FC<RouteComponentProps> = ({ history }: RouteComponentProps) => (
   <AppBar.Provider>
     <Switch>
+      <Route path="/story/:storyId/edit" exact component={AddStory} />
+
       <Route path="/story/:storyId">
         <AppBar.Consumer
           title="Story"
@@ -23,7 +25,7 @@ const Routes: React.FC<RouteComponentProps> = ({ history }: RouteComponentProps)
         <Route path="/story/:storyId/step/:stepId" component={StoryStep} exact />
         <Route path="/story/:storyId/instructions" component={StoryIntroScene} exact />
       </Route>
-      <Route path="/add" component={AddStory} />
+
       <Route component={StoryListScene} />
     </Switch>
   </AppBar.Provider>

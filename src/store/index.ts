@@ -15,9 +15,7 @@ export type AppState = ReturnType<typeof rootReducer>;
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-export default () => {
-  const store = createStore(persistedReducer, applyMiddleware(logger));
-  const persistor = persistStore(store);
+const store = createStore(persistedReducer, applyMiddleware(logger));
+const persistor = persistStore(store);
 
-  return { store, persistor };
-};
+export default () => ({ store, persistor });

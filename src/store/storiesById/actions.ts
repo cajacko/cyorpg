@@ -1,4 +1,3 @@
-import uuid from 'uuid';
 import {
   IStory,
   ISaveStoryPropAction,
@@ -6,23 +5,34 @@ import {
   SAVE_STORY_PROP,
   IDeleteStoryAction,
   DELETE_STORY,
+  ISaveDraftStoryAction,
+  SAVE_DRAFT_STORY,
 } from '../types';
+
+/**
+ * Save a draft story
+ */
+export function saveDraftStory(storyId: string): ISaveDraftStoryAction {
+  return {
+    type: SAVE_DRAFT_STORY,
+    payload: {
+      storyId,
+    },
+  };
+}
 
 /**
  * Save a story action
  */
 export function saveStoryProp<P extends IStoryProp>(
-  storyId: string | null,
+  storyId: string,
   key: P,
   value: IStory[P]
 ): ISaveStoryPropAction<P> {
-  const id = storyId || uuid();
-
   return {
     type: SAVE_STORY_PROP,
     payload: {
-      setAsDraft: !storyId,
-      storyId: id,
+      storyId,
       key,
       value,
     },

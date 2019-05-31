@@ -1,4 +1,5 @@
 import React from 'react';
+import uuid from 'uuid';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
@@ -53,7 +54,7 @@ const StoryListScene: React.FC<IProps> = ({ stories, welcomeText, history }: IPr
         color="primary"
         aria-label="Add"
         className={classes.fab}
-        onClick={() => history.push('/add')}
+        onClick={() => history.push(`/story/${uuid()}/edit`)}
       >
         <AddIcon />
       </Fab>

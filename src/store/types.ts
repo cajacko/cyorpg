@@ -42,7 +42,6 @@ export type IStoryProp = 'title' | 'description';
 export interface ISaveStoryPropAction<P extends IStoryProp> {
   type: typeof SAVE_STORY_PROP;
   payload: {
-    setAsDraft: boolean;
     storyId: string;
     key: P;
     value: IStory[P];

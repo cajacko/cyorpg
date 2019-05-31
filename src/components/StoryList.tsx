@@ -1,13 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { createStyles, makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import DeleteIcon from '@material-ui/icons/Edit';
 import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
 import { AppState } from '../store';
 
 interface IPassedProps {
@@ -25,16 +27,17 @@ interface IStateProps {
 
 interface IProps extends RouteComponentProps, IStateProps {}
 
-const useStyles = makeStyles(
-  createStyles({
-    details: {
-      flexDirection: 'column',
-    },
-    buttonContainer: {
-      marginTop: 10,
-    },
-  })
-);
+const useStyles = makeStyles(theme => ({
+  details: {
+    flexDirection: 'column',
+  },
+  button: {
+    margin: theme.spacing(1),
+  },
+  buttonContainer: {
+    marginTop: 10,
+  },
+}));
 
 /**
  * Render a list of stories
@@ -69,6 +72,13 @@ const StoryList: React.FC<IProps> = ({ stories, history }: IProps) => {
               <Button variant="contained" color="primary" onClick={() => history.push(route)}>
                 Play Story
               </Button>
+              <IconButton
+                className={classes.button}
+                aria-label="Edit"
+                onClick={() => history.push(`/story/${id}/edit`)}
+              >
+                <DeleteIcon />
+              </IconButton>
             </div>
           </ExpansionPanelDetails>
         </ExpansionPanel>
