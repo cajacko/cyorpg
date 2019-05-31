@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import {
   saveStoryProp,
   deleteStory as deleteStoryAction,
@@ -18,8 +19,20 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     display: 'flex',
     flexWrap: 'wrap',
   },
+  rightIcon: {
+    marginLeft: theme.spacing(1),
+  },
   textField: {
+    marginTop: 20,
     margin: 8,
+  },
+  buttons: {
+    margin: 8,
+    flexDirection: 'column',
+    display: 'flex',
+  },
+  button: {
+    marginTop: 20,
   },
 }));
 
@@ -44,7 +57,10 @@ interface IProps extends IStateProps, IDispatchProps, RouteProps {}
  * Add a story
  */
 const AddStory: React.FC<IProps> = ({
-  history,
+  history: { push },
+  match: {
+    params: { storyId },
+  },
   saveProp,
   title,
   description,
@@ -59,29 +75,21 @@ const AddStory: React.FC<IProps> = ({
   const handleChange = (key: IStoryProp) => (event: React.ChangeEvent<HTMLInputElement>) => saveProp(key, event.target.value);
 
   /**
-   * Save the draft story
-   */
-  const onSave = () => {
-    save();
-    history.push('/');
-  };
-
-  /**
    * Delete the story
    */
   const onDelete = () => {
     deleteStory();
-    history.push('/');
+    push('/');
   };
 
   return (
     <div>
       <AppBar.Consumer
-        title="Add Story"
+        title="Edit Story"
         leftButton="BACK"
         rightButton={{
-          text: 'Delete',
-          action: onDelete,
+          text: 'Save',
+          action: save,
         }}
       />
       <form className={classes.container} noValidate autoComplete="off">
@@ -112,9 +120,20 @@ const AddStory: React.FC<IProps> = ({
             shrink: true,
           }}
         />
-        <Button variant="contained" color="primary" onClick={onSave}>
-          Save
-        </Button>
+        <div className={classes.buttons}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => push(`/story/${storyId}/edit/parts`)}
+            className={classes.button}
+          >
+            Story Parts
+            <KeyboardArrowRight className={classes.rightIcon} />
+          </Button>
+          <Button variant="contained" color="primary" onClick={onDelete} className={classes.button}>
+            Delete
+          </Button>
+        </div>
       </form>
     </div>
   );
