@@ -7,6 +7,8 @@ import StoryIntroScene from '../scenes/StoryIntro';
 import StoryStep from '../scenes/StoryStep';
 import * as AppBar from '../context/AppBar';
 import AddStory from '../scenes/AddStory';
+import EditStoryParts from '../scenes/EditStoryParts';
+import EditStoryAppBar from './EditStoryAppBar';
 
 /**
  * All the routes for the app
@@ -14,7 +16,14 @@ import AddStory from '../scenes/AddStory';
 const Routes: React.FC<RouteComponentProps> = ({ history }: RouteComponentProps) => (
   <AppBar.Provider>
     <Switch>
-      <Route path="/story/:storyId/edit" exact component={AddStory} />
+      <Route path="/story/:storyId/edit">
+        <EditStoryAppBar />
+
+        <Switch>
+          <Route path="/story/:storyId/edit/parts" component={EditStoryParts} exact />
+          <Route component={AddStory} />
+        </Switch>
+      </Route>
 
       <Route path="/story/:storyId">
         <AppBar.Consumer
@@ -22,8 +31,10 @@ const Routes: React.FC<RouteComponentProps> = ({ history }: RouteComponentProps)
           leftButton="BACK"
           rightButton={{ text: 'Exit', action: () => history.push('/') }}
         />
-        <Route path="/story/:storyId/step/:stepId" component={StoryStep} exact />
-        <Route path="/story/:storyId/instructions" component={StoryIntroScene} exact />
+        <Switch>
+          <Route path="/story/:storyId/step/:stepId" component={StoryStep} exact />
+          <Route path="/story/:storyId/instructions" component={StoryIntroScene} exact />
+        </Switch>
       </Route>
 
       <Route component={StoryListScene} />

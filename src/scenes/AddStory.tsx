@@ -5,12 +5,7 @@ import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
-import {
-  saveStoryProp,
-  deleteStory as deleteStoryAction,
-  saveStory,
-} from '../store/storiesById/actions';
-import * as AppBar from '../context/AppBar';
+import { saveStoryProp, deleteStory as deleteStoryAction } from '../store/storiesById/actions';
 import { IStory, Dispatch, IStoryProp } from '../store/types';
 import { AppState } from '../store';
 
@@ -47,7 +42,6 @@ interface IStateProps {
 
 interface IDispatchProps {
   saveProp: <P extends IStoryProp>(key: P, value: IStory[P]) => void;
-  save: () => void;
   deleteStory: () => void;
 }
 
@@ -64,7 +58,6 @@ const AddStory: React.FC<IProps> = ({
   saveProp,
   title,
   description,
-  save,
   deleteStory,
 }: IProps) => {
   const classes = useStyles();
@@ -83,59 +76,49 @@ const AddStory: React.FC<IProps> = ({
   };
 
   return (
-    <div>
-      <AppBar.Consumer
-        title="Edit Story"
-        leftButton="BACK"
-        rightButton={{
-          text: 'Save',
-          action: save,
+    <form className={classes.container} noValidate autoComplete="off">
+      <TextField
+        value={title}
+        onChange={handleChange('title')}
+        id="standard-full-width"
+        label="Title"
+        className={classes.textField}
+        placeholder="The adventures of Mr. Miggins!"
+        fullWidth
+        margin="normal"
+        InputLabelProps={{
+          shrink: true,
         }}
       />
-      <form className={classes.container} noValidate autoComplete="off">
-        <TextField
-          value={title}
-          onChange={handleChange('title')}
-          id="standard-full-width"
-          label="Title"
-          className={classes.textField}
-          placeholder="The adventures of Mr. Miggins!"
-          fullWidth
-          margin="normal"
-          InputLabelProps={{
-            shrink: true,
-          }}
-        />
-        <TextField
-          value={description}
-          onChange={handleChange('description')}
-          id="standard-textarea"
-          label="Description"
-          multiline
-          fullWidth
-          className={classes.textField}
-          margin="normal"
-          placeholder="1 paragraph to describe the story"
-          InputLabelProps={{
-            shrink: true,
-          }}
-        />
-        <div className={classes.buttons}>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => push(`/story/${storyId}/edit/parts`)}
-            className={classes.button}
-          >
-            Story Parts
-            <KeyboardArrowRight className={classes.rightIcon} />
-          </Button>
-          <Button variant="contained" color="primary" onClick={onDelete} className={classes.button}>
-            Delete
-          </Button>
-        </div>
-      </form>
-    </div>
+      <TextField
+        value={description}
+        onChange={handleChange('description')}
+        id="standard-textarea"
+        label="Description"
+        multiline
+        fullWidth
+        className={classes.textField}
+        margin="normal"
+        placeholder="1 paragraph to describe the story"
+        InputLabelProps={{
+          shrink: true,
+        }}
+      />
+      <div className={classes.buttons}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => push(`/story/${storyId}/edit/parts`)}
+          className={classes.button}
+        >
+          Story Parts
+          <KeyboardArrowRight className={classes.rightIcon} />
+        </Button>
+        <Button variant="contained" color="primary" onClick={onDelete} className={classes.button}>
+          Delete
+        </Button>
+      </div>
+    </form>
   );
 };
 
@@ -177,7 +160,6 @@ const mapDispatchToProps = (
   }: RouteProps
 ): IDispatchProps => ({
   saveProp: (key, value) => dispatch(saveStoryProp(storyId, key, value)),
-  save: () => dispatch(saveStory(storyId)),
   deleteStory: () => dispatch(deleteStoryAction(storyId)),
 });
 
