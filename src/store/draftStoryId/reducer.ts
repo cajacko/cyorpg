@@ -1,16 +1,22 @@
 import { Actions } from '../types';
 
-type IState = string[];
+type IState = string;
 
-const defaultState = ['1', '2', '3'];
+const defaultState = 'draft-story';
 
 /**
- * Stories reducer
+ * Draft story id
  */
 const reducer = (state: IState = defaultState, action: Actions): IState => {
   switch (action.type) {
     case 'SAVE_DRAFT_STORY':
-      return [action.payload.storyId].concat(state);
+      return defaultState;
+
+    case 'SAVE_STORY_PROP': {
+      if (!action.payload.setAsDraft) return state;
+
+      return action.payload.storyId;
+    }
 
     default:
       return state;

@@ -18,7 +18,8 @@
     "redux": "^4.0.1",
     "redux-logger": "^3.0.6",
     "redux-persist": "^5.10.0",
-    "typescript": "3.4.5"
+    "typescript": "3.4.5",
+    "uuid": "^3.3.2"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -99,7 +100,7 @@
           "functions": "ignore"
         }
       ],
-      "import/prefer-default-export": "warn",
+      "import/prefer-default-export": "off",
       "require-jsdoc": [
         "error",
         {
@@ -217,6 +218,7 @@
   "devDependencies": {
     "@types/react-redux": "^7.0.9",
     "@types/redux-logger": "^3.0.7",
+    "@types/uuid": "^3.4.4",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-config-prettier": "^4.3.0",
     "eslint-plugin-cajacko": "^1.0.0",

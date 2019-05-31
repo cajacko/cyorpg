@@ -1,5 +1,4 @@
-import { Action } from 'redux';
-import { IMap, IStoryPart } from '../types';
+import { IMap, IStoryPart, Actions } from '../types';
 
 type IState = IMap<IStoryPart>;
 
@@ -66,7 +65,7 @@ const defaultState: IState = {
 /**
  * Stories reducer
  */
-const reducer = (state: IState = defaultState, action: Action): IState => {
+const reducer = (state: IState = defaultState, action: Actions): IState => {
   switch (action.type) {
     default:
       return state;
