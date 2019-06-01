@@ -9,6 +9,7 @@ const defaultState: IState = {
     storyParts: {
       1: {
         id: '1',
+        label: 'label 1',
         headline: 'Part 1',
         content: 'Content of stuff',
         actions: [
@@ -28,6 +29,7 @@ const defaultState: IState = {
       },
       2: {
         id: '2',
+        label: 'label 2',
         headline: 'Part 2',
         content: 'Content of stuff',
         actions: [
@@ -47,6 +49,7 @@ const defaultState: IState = {
       },
       3: {
         id: '3',
+        label: 'label 3',
         headline: 'Part 3',
         content: 'Content of stuff',
         actions: [
@@ -74,6 +77,7 @@ const defaultState: IState = {
     storyParts: {
       1: {
         id: '1',
+        label: 'label 1',
         headline: 'Part 1',
         content: 'Content of stuff',
         actions: [
@@ -93,6 +97,7 @@ const defaultState: IState = {
       },
       2: {
         id: '2',
+        label: 'label 2',
         headline: 'Part 2',
         content: 'Content of stuff',
         actions: [
@@ -112,6 +117,7 @@ const defaultState: IState = {
       },
       3: {
         id: '3',
+        label: 'label 3',
         headline: 'Part 3',
         content: 'Content of stuff',
         actions: [
@@ -139,6 +145,7 @@ const defaultState: IState = {
     storyParts: {
       1: {
         id: '1',
+        label: 'label 1',
         headline: 'Part 1',
         content: 'Content of stuff',
         actions: [
@@ -158,6 +165,7 @@ const defaultState: IState = {
       },
       2: {
         id: '2',
+        label: 'label 2',
         headline: 'Part 2',
         content: 'Content of stuff',
         actions: [
@@ -177,6 +185,7 @@ const defaultState: IState = {
       },
       3: {
         id: '3',
+        label: 'label 3',
         headline: 'Part 3',
         content: 'Content of stuff',
         actions: [

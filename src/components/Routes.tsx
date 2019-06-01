@@ -9,6 +9,7 @@ import * as AppBar from '../context/AppBar';
 import AddStory from '../scenes/AddStory';
 import EditStoryParts from '../scenes/EditStoryParts';
 import EditStoryAppBar from './EditStoryAppBar';
+import EditStoryPart from '../scenes/EditStoryPart';
 
 /**
  * All the routes for the app
@@ -21,6 +22,7 @@ const Routes: React.FC<RouteComponentProps> = ({ history }: RouteComponentProps)
 
         <Switch>
           <Route path="/story/:storyId/edit/parts" component={EditStoryParts} exact />
+          <Route path="/story/:storyId/edit/part/:partId" component={EditStoryPart} exact />
           <Route component={AddStory} />
         </Switch>
       </Route>

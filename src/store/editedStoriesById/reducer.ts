@@ -1,4 +1,6 @@
-import { IMap, IStory, Actions } from '../types';
+import {
+  IMap, IStory, Actions, IStoryPart,
+} from '../types';
 
 export type IState = IMap<IStory>;
 
@@ -37,6 +39,56 @@ const reducer = (state: IState = {}, action: Actions): IState => {
           ...newStory,
           [key]: value,
         },
+      };
+    }
+
+    case 'DELETE_STORY_PART': {
+      const { storyId, story, partId } = action.payload;
+
+      const newStory: IStory = story || {
+        id: storyId,
+        title: '',
+        description: '',
+        startingStoryPart: 'null',
+        storyParts: {},
+      };
+
+      delete newStory.storyParts[partId];
+
+      return {
+        ...state,
+        [storyId]: newStory,
+      };
+    }
+
+    case 'SAVE_STORY_PART_PROP': {
+      const {
+        storyId, key, value, story, partId, storyPart,
+      } = action.payload;
+
+      const newStory: IStory = story || {
+        id: storyId,
+        title: '',
+        description: '',
+        startingStoryPart: 'null',
+        storyParts: {},
+      };
+
+      const newPart: IStoryPart = storyPart || {
+        id: partId,
+        label: '',
+        content: '',
+        actions: [],
+      };
+
+      newStory.storyParts[partId] = {
+        ...newPart,
+        [key]: value,
+      };
+
+      return {
+        ...state,
+        [storyId]: newStory,
       };
     }
 
