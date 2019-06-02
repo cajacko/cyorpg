@@ -9,12 +9,13 @@ const styles = {
 
 export interface BoxDragPreviewProps {
   title: string;
+  id: string;
 }
 
 /**
  * Thing
  */
-const BoxDragPreview: React.FC<BoxDragPreviewProps> = ({ title }) => {
+const BoxDragPreview: React.FC<BoxDragPreviewProps> = ({ title, id }) => {
   const [tickTock, setTickTock] = useState(false);
 
   useEffect(() => {
@@ -26,7 +27,7 @@ const BoxDragPreview: React.FC<BoxDragPreviewProps> = ({ title }) => {
 
   return (
     <div style={styles}>
-      <Box title={title} yellow={tickTock} />
+      <Box title={title} yellow={tickTock} id={id} />
     </div>
   );
 };

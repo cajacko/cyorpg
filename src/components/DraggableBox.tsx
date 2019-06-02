@@ -56,11 +56,11 @@ class DraggableBox extends React.PureComponent<DraggableBoxProps> {
    * Test
    */
   public render() {
-    const { title, connectDragSource } = this.props;
+    const { title, connectDragSource, id } = this.props;
 
     return connectDragSource(
       <div style={getStyles(this.props)}>
-        <Box title={title} />
+        <Box title={title} id={id} />
       </div>
     );
   }

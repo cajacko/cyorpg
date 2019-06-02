@@ -14,6 +14,8 @@ import {
   ISaveStoryPartPropAction,
   DELETE_STORY_PART,
   IDeleteStoryPartAction,
+  ISetStoryPartPositionAction,
+  SET_STORY_PART_POSITION,
 } from '../types';
 
 /**
@@ -109,3 +111,33 @@ export const deleteStoryPart = (storyId: string, partId: string): IDeleteStoryPa
     story: getStory(storyId),
   },
 });
+
+/**
+ * Save a story part action
+ */
+export const setStoryPartPosition = (
+  storyId: string,
+  partId: string,
+  x: number,
+  y: number
+): ISetStoryPartPositionAction => {
+  const story = getStory(storyId);
+
+  let storyPart;
+
+  if (story) {
+    storyPart = story.storyParts[partId];
+  }
+
+  return {
+    type: SET_STORY_PART_POSITION,
+    payload: {
+      storyId,
+      partId,
+      x,
+      y,
+      storyPart,
+      story,
+    },
+  };
+};

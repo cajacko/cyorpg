@@ -56,7 +56,7 @@ const CustomDragLayer: React.FC<CustomDragLayerProps> = (props) => {
   function renderItem() {
     switch (itemType) {
       case ItemTypes.BOX:
-        return <BoxDragPreview title={item.title} />;
+        return <BoxDragPreview title={item.title} id={item.id} />;
       default:
         return null;
     }

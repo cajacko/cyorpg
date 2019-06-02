@@ -15,11 +15,10 @@ interface IProps {
 //  * Render the tree of story parts
 //  */
 // const PartsTree: React.FC<IProps> = ({ parts }: IProps) => {
-//   // @ts-ignore
-//   const partsArr: IStoryPart[] = Object.values(parts).filter<IStoryPart>(part => !!part);
+// // @ts-ignore
+// const partsArr: IStoryPart[] = Object.values(parts).filter<IStoryPart>(part => !!part);
 
 //   return (
-//     <DragDropContextProvider backend={HTML5Backend}>
 //       <div style={{ position: 'relative' }}>
 //         {partsArr.map(({ id, label, tree: { position: { x, y } } }) => (
 //           <div key={id} style={{ top: y || 0, left: x || 0, position: 'absolute' }}>
@@ -27,7 +26,6 @@ interface IProps {
 //           </div>
 //         ))}
 //       </div>
-//     </DragDropContextProvider>
 //   );
 // };
 
@@ -37,7 +35,7 @@ interface IProps {
 const PartsTree: React.FC<IProps> = ({ parts }: IProps) => (
   <React.Fragment>
     <CustomDragLayer />
-    <Container />
+    <Container parts={parts} />
   </React.Fragment>
 );
 

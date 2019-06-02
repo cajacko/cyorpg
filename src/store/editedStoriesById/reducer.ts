@@ -95,6 +95,40 @@ const reducer = (state: IState = {}, action: Actions): IState => {
       };
     }
 
+    case 'SET_STORY_PART_POSITION': {
+      const {
+        storyId, x, y, story, partId, storyPart,
+      } = action.payload;
+
+      const newStory: IStory = story || {
+        id: storyId,
+        title: '',
+        description: '',
+        startingStoryPart: 'null',
+        storyParts: {},
+      };
+
+      const newPart: IStoryPart = storyPart || {
+        id: partId,
+        label: '',
+        content: '',
+        actions: [],
+        tree: {
+          position: {},
+        },
+      };
+
+      newPart.tree.position.x = x;
+      newPart.tree.position.y = y;
+
+      newStory.storyParts[partId] = newPart;
+
+      return {
+        ...state,
+        [storyId]: newStory,
+      };
+    }
+
     default:
       return state;
   }

@@ -47,6 +47,7 @@ export const SAVE_STORY_PART_PROP = 'SAVE_STORY_PART_PROP';
 export const SAVE_STORY = 'SAVE_STORY';
 export const DELETE_STORY = 'DELETE_STORY';
 export const DELETE_STORY_PART = 'DELETE_STORY_PART';
+export const SET_STORY_PART_POSITION = 'SET_STORY_PART_POSITION';
 
 export type IStoryProp = 'title' | 'description';
 export type IStoryPartProp = 'label' | 'headline' | 'content';
@@ -94,10 +95,23 @@ export interface IDeleteStoryPartAction {
   };
 }
 
+export interface ISetStoryPartPositionAction {
+  type: typeof SET_STORY_PART_POSITION;
+  payload: {
+    storyId: string;
+    partId: string;
+    x: number;
+    y: number;
+    story?: IStory;
+    storyPart?: IStoryPart;
+  };
+}
+
 export type Actions = | ISaveStoryPropAction<IStoryProp>
   | ISaveStoryAction
   | IDeleteStoryAction
   | ISaveStoryPartPropAction<IStoryPartProp>
-  | IDeleteStoryPartAction;
+  | IDeleteStoryPartAction
+  | ISetStoryPartPositionAction;
 
 export type Dispatch = RDispatch<Actions>;
