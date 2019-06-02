@@ -20,18 +20,26 @@ export interface IStoryPart {
   headline?: string;
   content: string;
   actions: IAction[];
+  tree: {
+    position: {
+      x?: number;
+      y?: number;
+    };
+  };
 }
 
 export interface IMap<V> {
   [key: string]: V | undefined;
 }
 
+export type IStoryParts = IMap<IStoryPart>;
+
 export interface IStory {
   id: string;
   title: string;
   description: string;
   startingStoryPart: string;
-  storyParts: IMap<IStoryPart>;
+  storyParts: IStoryParts;
 }
 
 export const SAVE_STORY_PROP = 'SAVE_STORY_PROP';

@@ -79,6 +79,9 @@ const reducer = (state: IState = {}, action: Actions): IState => {
         label: '',
         content: '',
         actions: [],
+        tree: {
+          position: {},
+        },
       };
 
       newStory.storyParts[partId] = {

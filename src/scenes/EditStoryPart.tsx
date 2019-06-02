@@ -142,6 +142,9 @@ const mapStateToProps = (
     label: '',
     content: '',
     actions: [],
+    tree: {
+      position: {},
+    },
   };
 
   if (!story) return defaultPart;
