@@ -1,5 +1,6 @@
 import React from 'react';
 import { DragSource, ConnectDragSource, ConnectDragPreview } from 'react-dnd';
+import { ArcherElement } from 'react-archer';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 import ItemTypes from './ItemTypes';
 import Box from './Box';
@@ -60,7 +61,21 @@ class DraggableBox extends React.PureComponent<DraggableBoxProps> {
 
     return connectDragSource(
       <div style={getStyles(this.props)}>
-        <Box title={title} id={id} />
+        <ArcherElement
+          id={id}
+          relations={[
+            {
+              targetId:
+                id === '39da8979-1ac5-44d8-8ba8-c26d8abf50be'
+                  ? ''
+                  : '39da8979-1ac5-44d8-8ba8-c26d8abf50be',
+              targetAnchor: 'top',
+              sourceAnchor: 'bottom',
+            },
+          ]}
+        >
+          <Box title={title} id={id} />
+        </ArcherElement>
       </div>
     );
   }

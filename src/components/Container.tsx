@@ -28,6 +28,7 @@ interface IDispatchProps {
 export interface ContainerProps {
   connectDropTarget: ConnectDropTarget;
   parts: IStoryParts;
+  renderArrows: () => void;
 }
 
 interface IProps extends ContainerProps, IDispatchProps, RouteProps {}
@@ -44,6 +45,8 @@ class Container extends React.PureComponent<IProps> {
     this.props.setStoryPartPosition(id, left, top);
     // Needed, as doesn't rerender otherwise, think react-dnd prevents rerender for some reason
     this.forceUpdate();
+    // eslint-disable-next-line
+    this.props.renderArrows();
   }
 
   /**
@@ -63,8 +66,6 @@ class Container extends React.PureComponent<IProps> {
 
     // @ts-ignore
     const partsArr: IStoryPart[] = Object.values(parts).filter<IStoryPart>(part => !!part);
-
-    console.log('render', parts);
 
     return connectDropTarget(
       <div style={styles}>{partsArr.map(part => this.renderBox(part, part.id))}</div>
