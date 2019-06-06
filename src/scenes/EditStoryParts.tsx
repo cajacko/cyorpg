@@ -46,7 +46,7 @@ const EditStoryParts: React.FC<IProps> = ({
 
   return (
     <React.Fragment>
-      <PartsTree parts={parts} />
+      <PartsTree parts={parts} heightOffset={56} />
       <Fab
         color="primary"
         aria-label="Add"

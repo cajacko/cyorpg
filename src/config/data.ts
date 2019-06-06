@@ -6,6 +6,7 @@ const defaultState: IState = {
     title: 'Story Title 1',
     description: 'Description baby',
     startingStoryPart: '1',
+    bounds: {},
     storyParts: {
       1: {
         id: '1',

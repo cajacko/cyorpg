@@ -10,13 +10,6 @@ import DraggableBox from './DraggableBox';
 import { setStoryPartPosition } from '../store/storiesById/actions';
 import { IStoryParts, IStoryPart } from '../store/types';
 
-const styles: React.CSSProperties = {
-  width: '100vw',
-  height: '100vh',
-  border: '1px solid black',
-  position: 'relative',
-};
-
 type RouteProps = RouteComponentProps<{
   storyId: string;
 }>;
@@ -29,6 +22,8 @@ export interface ContainerProps {
   connectDropTarget: ConnectDropTarget;
   parts: IStoryParts;
   renderArrows: () => void;
+  leftOffset: number;
+  topOffset: number;
 }
 
 interface IProps extends ContainerProps, IDispatchProps, RouteProps {}
@@ -41,11 +36,9 @@ class Container extends React.PureComponent<IProps> {
    * Test
    */
   public moveBox(id: string, left: number, top: number) {
-    // eslint-disable-next-line
-    this.props.setStoryPartPosition(id, left, top);
+    this.props.setStoryPartPosition(id, left - this.props.leftOffset, top - this.props.topOffset);
     // Needed, as doesn't rerender otherwise, think react-dnd prevents rerender for some reason
     this.forceUpdate();
-    // eslint-disable-next-line
     this.props.renderArrows();
   }
 
@@ -55,7 +48,10 @@ class Container extends React.PureComponent<IProps> {
   private renderBox(item: IStoryPart, key: string) {
     const { x, y } = item.tree.position;
 
-    return <DraggableBox key={key} id={key} title={item.label} left={x || 0} top={y || 0} />;
+    const left = (x || 0) + this.props.leftOffset;
+    const top = (y || 0) + this.props.topOffset;
+
+    return <DraggableBox key={key} id={key} title={item.label} left={left} top={top} />;
   }
 
   /**
@@ -66,6 +62,12 @@ class Container extends React.PureComponent<IProps> {
 
     // @ts-ignore
     const partsArr: IStoryPart[] = Object.values(parts).filter<IStoryPart>(part => !!part);
+
+    const styles: React.CSSProperties = {
+      width: '100%',
+      height: '100%',
+      position: 'relative',
+    };
 
     return connectDropTarget(
       <div style={styles}>{partsArr.map(part => this.renderBox(part, part.id))}</div>

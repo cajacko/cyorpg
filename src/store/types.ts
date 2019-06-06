@@ -14,6 +14,15 @@ interface IAction2 {
 
 export type IAction = IAction1 | IAction2;
 
+type Position = | {
+      x: number;
+      y: number;
+    }
+  | {
+      x?: undefined;
+      y?: undefined;
+    };
+
 export interface IStoryPart {
   id: string;
   label: string;
@@ -21,10 +30,7 @@ export interface IStoryPart {
   content: string;
   actions: IAction[];
   tree: {
-    position: {
-      x?: number;
-      y?: number;
-    };
+    position: Position;
   };
 }
 
@@ -34,12 +40,25 @@ export interface IMap<V> {
 
 export type IStoryParts = IMap<IStoryPart>;
 
+type Bounds = | {
+      left: number;
+      right: number;
+      top: number;
+      bottom: number;
+    }
+  | {
+      left?: undefined;
+      right?: undefined;
+      top?: undefined;
+      bottom?: undefined;
+    };
 export interface IStory {
   id: string;
   title: string;
   description: string;
   startingStoryPart: string;
   storyParts: IStoryParts;
+  bounds: Bounds;
 }
 
 export const SAVE_STORY_PROP = 'SAVE_STORY_PROP';

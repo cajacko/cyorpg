@@ -5,6 +5,37 @@ import {
 export type IState = IMap<IStory>;
 
 /**
+ * Get the min and max positions for story parts
+ */
+const getBounds = (storyParts: IStory['storyParts']): IStory['bounds'] => {
+  let bounds: IStory['bounds'] = {};
+
+  Object.values(storyParts).forEach((storyPart) => {
+    if (!storyPart) return;
+
+    const { x, y } = storyPart.tree.position;
+
+    if (!x || !y) return;
+
+    if (!bounds.left || !bounds.right || !bounds.top || !bounds.bottom) {
+      bounds = {
+        left: x,
+        right: x,
+        top: y,
+        bottom: y,
+      };
+    }
+
+    if (x < bounds.left) bounds.left = x;
+    if (x > bounds.right) bounds.right = x;
+    if (y < bounds.top) bounds.top = y;
+    if (y > bounds.bottom) bounds.bottom = y;
+  });
+
+  return bounds;
+};
+
+/**
  * Stories reducer
  */
 const reducer = (state: IState = {}, action: Actions): IState => {
@@ -31,6 +62,7 @@ const reducer = (state: IState = {}, action: Actions): IState => {
         description: '',
         startingStoryPart: 'null',
         storyParts: {},
+        bounds: {},
       };
 
       return {
@@ -51,6 +83,7 @@ const reducer = (state: IState = {}, action: Actions): IState => {
         description: '',
         startingStoryPart: 'null',
         storyParts: {},
+        bounds: {},
       };
 
       delete newStory.storyParts[partId];
@@ -72,6 +105,7 @@ const reducer = (state: IState = {}, action: Actions): IState => {
         description: '',
         startingStoryPart: 'null',
         storyParts: {},
+        bounds: {},
       };
 
       const newPart: IStoryPart = storyPart || {
@@ -106,6 +140,7 @@ const reducer = (state: IState = {}, action: Actions): IState => {
         description: '',
         startingStoryPart: 'null',
         storyParts: {},
+        bounds: {},
       };
 
       const newPart: IStoryPart = storyPart || {
@@ -122,6 +157,7 @@ const reducer = (state: IState = {}, action: Actions): IState => {
       newPart.tree.position.y = y;
 
       newStory.storyParts[partId] = newPart;
+      newStory.bounds = getBounds(newStory.storyParts);
 
       return {
         ...state,

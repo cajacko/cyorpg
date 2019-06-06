@@ -37,28 +37,13 @@
   },
   "eslintConfig": {
     "parser": "typescript-eslint-parser",
-    "extends": [
-      "airbnb"
-    ],
-    "plugins": [
-      "jest",
-      "cajacko"
-    ],
+    "extends": ["airbnb"],
+    "plugins": ["jest", "cajacko"],
     "settings": {
       "import/resolver": {
         "node": {
-          "moduleDirectory": [
-            "./src",
-            "node_modules"
-          ],
-          "extensions": [
-            ".js",
-            ".jsx",
-            ".ios.js",
-            ".android.js",
-            ".ts",
-            ".tsx"
-          ]
+          "moduleDirectory": ["./src", "node_modules"],
+          "extensions": [".js", ".jsx", ".ios.js", ".android.js", ".ts", ".tsx"]
         }
       }
     },
@@ -138,14 +123,11 @@
       "react/jsx-filename-extension": [
         "warn",
         {
-          "extensions": [
-            ".js",
-            ".ts",
-            ".tsx"
-          ]
+          "extensions": [".js", ".ts", ".tsx"]
         }
       ],
       "class-methods-use-this": "off",
+      "react/destructuring-assignment": "off",
       "react/default-props-match-prop-types": [
         "error",
         {
@@ -176,45 +158,24 @@
     },
     "overrides": [
       {
-        "files": [
-          "**/__mocks__/**/*",
-          "**/__tests__/**/*",
-          "**/*.test.*"
-        ],
+        "files": ["**/__mocks__/**/*", "**/__tests__/**/*", "**/*.test.*"],
         "rules": {
-          "require-jsdoc": [
-            "off"
-          ],
-          "max-lines": [
-            "off"
-          ],
-          "no-underscore-dangle": [
-            "off"
-          ]
+          "require-jsdoc": ["off"],
+          "max-lines": ["off"],
+          "no-underscore-dangle": ["off"]
         }
       },
       {
-        "files": [
-          "**/*.ts",
-          "**/*.tsx"
-        ],
+        "files": ["**/*.ts", "**/*.tsx"],
         "rules": {
-          "no-unused-vars": [
-            "off"
-          ],
-          "no-undef": [
-            "off"
-          ]
+          "no-unused-vars": ["off"],
+          "no-undef": ["off"]
         }
       }
     ]
   },
   "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
+    "production": [">0.2%", "not dead", "not op_mini all"],
     "development": [
       "last 1 chrome version",
       "last 1 firefox version",
