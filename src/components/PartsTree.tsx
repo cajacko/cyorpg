@@ -9,13 +9,7 @@ import { AppState } from '../store';
 import { IStory, IStoryParts } from '../store/types';
 import CustomDragLayer from './CustomDragLayer';
 import Container from './Container';
-
-const cardSize = {
-  height: 38,
-  width: 100,
-};
-
-const canvasPadding = 0;
+import useLayout from '../hooks/useLayout';
 
 type RouteProps = RouteComponentProps<{
   storyId: string;
@@ -34,31 +28,7 @@ interface IProps extends IStateProps, RouteProps {
  * Test
  */
 const PartsTree: React.FC<IProps> = ({ parts, heightOffset, bounds }: IProps) => {
-  const archerContainer = React.useRef(null);
-
-  /**
-   * Test
-   */
-  const renderArrows = () => {
-    if (!archerContainer) return;
-    if (!archerContainer.current) return;
-
-    // @ts-ignore
-    archerContainer.current.refreshScreen();
-  };
-
-  let height: number = 0;
-  let width: number = 0;
-  let leftOffset: number = 0;
-  let topOffset: number = 0;
-
-  if (bounds.bottom) {
-    height = bounds.bottom - bounds.top + cardSize.height + canvasPadding;
-    width = bounds.right - bounds.left + cardSize.width + canvasPadding;
-
-    leftOffset = -(bounds.left - canvasPadding / 2);
-    topOffset = -(bounds.top - canvasPadding / 2);
-  }
+  const layout = useLayout(bounds);
 
   return (
     <div
@@ -67,17 +37,18 @@ const PartsTree: React.FC<IProps> = ({ parts, heightOffset, bounds }: IProps) =>
         height: `calc(100vh - ${heightOffset}px)`,
         overflow: 'auto',
       }}
+      ref={layout.scrollContainer}
     >
       {/*
   // @ts-ignore */}
       <ArcherContainer
         strokeColor="#0e0e0e2e"
         strokeWidth={1}
-        ref={archerContainer}
+        ref={layout.archerContainer}
         arrowLength={5}
         style={{
-          width,
-          height,
+          width: layout.width,
+          height: layout.height,
           minWidth: '100%',
           minHeight: '100%',
         }}
@@ -85,9 +56,9 @@ const PartsTree: React.FC<IProps> = ({ parts, heightOffset, bounds }: IProps) =>
         <CustomDragLayer />
         <Container
           parts={parts}
-          renderArrows={renderArrows}
-          leftOffset={leftOffset}
-          topOffset={topOffset}
+          renderArrows={layout.renderArrows}
+          leftOffset={layout.leftOffset}
+          topOffset={layout.topOffset}
         />
       </ArcherContainer>
     </div>
