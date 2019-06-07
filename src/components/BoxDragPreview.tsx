@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Box from './Box';
 
 const styles = {
@@ -17,21 +17,10 @@ export interface BoxDragPreviewProps {
 /**
  * Thing
  */
-const BoxDragPreview: React.FC<BoxDragPreviewProps> = (props) => {
-  const [tickTock, setTickTock] = useState(false);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTickTock(!tickTock);
-    }, 500);
-    return () => clearInterval(interval);
-  }, [tickTock]);
-
-  return (
-    <div style={styles}>
-      <Box yellow={tickTock} {...props} />
-    </div>
-  );
-};
+const BoxDragPreview: React.FC<BoxDragPreviewProps> = props => (
+  <div style={styles}>
+    <Box {...props} />
+  </div>
+);
 
 export default BoxDragPreview;

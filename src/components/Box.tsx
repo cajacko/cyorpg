@@ -1,5 +1,8 @@
 import React from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { AppState } from '../store';
+import getIsStartingStoryPart from '../utils/getIsStartingStoryPart';
 
 const styles: React.CSSProperties = {
   border: '1px dashed gray',
@@ -12,20 +15,26 @@ type RouteProps = RouteComponentProps<{
   storyId: string;
 }>;
 
-export interface BoxProps extends RouteProps {
+interface IStateProps {
+  isStartingStoryPart: boolean;
+}
+
+export interface IPassedProps {
   title: string;
-  yellow?: boolean;
   id: string;
   width: number;
   height: number;
 }
 
+interface IPropsBeforeConnected extends RouteProps, IPassedProps {}
+
+interface IProps extends IStateProps, IPropsBeforeConnected {}
+
 /**
  * Box
  */
-const Box: React.FC<BoxProps> = ({
+const Box: React.FC<IProps> = ({
   title,
-  yellow,
   history: { push },
   match: {
     params: { storyId },
@@ -33,8 +42,9 @@ const Box: React.FC<BoxProps> = ({
   id,
   width,
   height,
-}: BoxProps) => {
-  const backgroundColor = yellow ? 'yellow' : 'white';
+  isStartingStoryPart,
+}: IProps) => {
+  const backgroundColor = isStartingStoryPart ? 'yellow' : 'white';
 
   return (
     <button
@@ -52,4 +62,22 @@ const Box: React.FC<BoxProps> = ({
   );
 };
 
-export default withRouter(Box);
+/**
+ * Get the props from state
+ */
+const mapStateToProps = (
+  state: AppState,
+  {
+    id,
+    match: {
+      params: { storyId },
+    },
+  }: IPropsBeforeConnected
+): IStateProps => ({
+  isStartingStoryPart: getIsStartingStoryPart(
+    state.editedStoriesById[storyId] || state.storiesById[storyId],
+    id
+  ),
+});
+
+export default withRouter(connect(mapStateToProps)(Box));
