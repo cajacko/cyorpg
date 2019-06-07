@@ -21,6 +21,7 @@ interface IProviderProps extends RouteComponentProps {
 interface IAppBarProps {
   title?: string;
   leftButton?: 'BACK' | 'MENU';
+  customBackRoute?: string;
   rightButton?: {
     action: () => void;
     text: string;
@@ -77,7 +78,9 @@ const AppBar: React.FC<IProviderProps> = ({ children, history }: IProviderProps)
     },
   };
 
-  const { leftButton, title, rightButton } = props;
+  const {
+    leftButton, title, rightButton, customBackRoute,
+  } = props;
 
   let leftButtonComponent;
 
@@ -89,7 +92,7 @@ const AppBar: React.FC<IProviderProps> = ({ children, history }: IProviderProps)
           className={classes.menuButton}
           color="inherit"
           aria-label="Menu"
-          onClick={history.goBack}
+          onClick={customBackRoute ? () => history.push(customBackRoute) : history.goBack}
         >
           <KeyboardArrowLeft />
         </IconButton>

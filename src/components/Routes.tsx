@@ -8,7 +8,6 @@ import StoryStep from '../scenes/StoryStep';
 import * as AppBar from '../context/AppBar';
 import AddStory from '../scenes/AddStory';
 import EditStoryParts from '../scenes/EditStoryParts';
-import EditStoryAppBar from './EditStoryAppBar';
 import EditStoryPart from '../scenes/EditStoryPart';
 
 /**
@@ -18,8 +17,6 @@ const Routes: React.FC<RouteComponentProps> = ({ history }: RouteComponentProps)
   <AppBar.Provider>
     <Switch>
       <Route path="/story/:storyId/edit">
-        <EditStoryAppBar />
-
         <Switch>
           <Route path="/story/:storyId/edit/parts" component={EditStoryParts} exact />
           <Route path="/story/:storyId/edit/part/:partId" component={EditStoryPart} exact />

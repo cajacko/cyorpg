@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import PartsTree from '../components/PartsTree';
 import { AppState } from '../store';
 import { IStoryParts } from '../store/types';
+import EditStoryAppBar from '../components/EditStoryAppBar';
 
 interface IStateProps {
   parts: IStoryParts;
@@ -29,6 +30,7 @@ const EditStoryParts: React.FC<IProps> = ({
 
   return (
     <React.Fragment>
+      <EditStoryAppBar title="Edit Story" backRoute={`/story/${storyId}/edit`} />
       <PartsTree parts={parts} heightOffset={56} />
     </React.Fragment>
   );

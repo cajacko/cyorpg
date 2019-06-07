@@ -18,20 +18,36 @@ interface IDispatchProps {
   save: () => void;
 }
 
-interface IProps extends RouteProps, IDispatchProps, IStateProps {}
+interface IProps extends RouteProps, IDispatchProps, IStateProps {
+  title: 'Edit Story' | 'Edit Story Part' | 'Edit Starting Story Part';
+  backRoute?: string;
+  saveRedirect?: string;
+}
 
 /**
  * Add a story
  */
-const AddStory: React.FC<IProps> = ({ save, hasChanges }: IProps) => (
+const AddStory: React.FC<IProps> = ({
+  save,
+  hasChanges,
+  title,
+  backRoute,
+  saveRedirect,
+  history,
+}: IProps) => (
   <AppBar.Consumer
-    title="Edit Story"
+    title={title}
     leftButton="BACK"
+    customBackRoute={backRoute}
     rightButton={
       hasChanges
         ? {
           text: 'Save',
-          action: save,
+          action: () => {
+            save();
+
+            if (saveRedirect) history.push(saveRedirect);
+          },
         }
         : undefined
     }

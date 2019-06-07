@@ -8,6 +8,7 @@ import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import { saveStoryProp, deleteStory as deleteStoryAction } from '../store/storiesById/actions';
 import { IStory, Dispatch, IStoryProp } from '../store/types';
 import { AppState } from '../store';
+import EditStoryAppBar from '../components/EditStoryAppBar';
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
   container: {
@@ -77,6 +78,7 @@ const AddStory: React.FC<IProps> = ({
 
   return (
     <form className={classes.container} noValidate autoComplete="off">
+      <EditStoryAppBar title="Edit Story" backRoute="/" />
       <TextField
         value={title}
         onChange={handleChange('title')}
