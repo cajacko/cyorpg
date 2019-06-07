@@ -65,7 +65,7 @@ export const DELETE_STORY_PART = 'DELETE_STORY_PART';
 export const SET_STORY_PART_POSITION = 'SET_STORY_PART_POSITION';
 export const SET_LAST_SCROLL = 'SET_LAST_SCROLL';
 
-export type IStoryProp = 'title' | 'description';
+export type IStoryProp = 'title' | 'description' | 'startingStoryPart';
 export type IStoryPartProp = 'label' | 'headline' | 'content';
 
 export interface ISaveStoryPropAction<P extends IStoryProp> {

@@ -8,7 +8,7 @@ import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
-import { saveStoryPartProp, deleteStoryPart } from '../store/storiesById/actions';
+import { saveStoryPartProp, deleteStoryPart, saveStoryProp } from '../store/storiesById/actions';
 import { Dispatch, IStoryPartProp, IStoryPart } from '../store/types';
 import { AppState } from '../store';
 import getIsStartingStoryPart from '../utils/getIsStartingStoryPart';
@@ -54,6 +54,7 @@ interface IStateProps extends IStoryPart {
 interface IDispatchProps {
   saveProp: <P extends IStoryPartProp>(key: P, value: IStoryPart[P]) => void;
   deletePart: () => void;
+  onSetStartingPart: () => void;
 }
 
 interface IProps extends IStateProps, IDispatchProps, RouteProps {}
@@ -72,6 +73,7 @@ const EditStoryPart: React.FC<IProps> = ({
   content,
   deletePart,
   isStartingStoryPart,
+  onSetStartingPart,
 }: IProps) => {
   const classes = useStyles();
 
@@ -139,10 +141,33 @@ const EditStoryPart: React.FC<IProps> = ({
           shrink: true,
         }}
       />
+
       <div className={classes.buttons}>
-        <Button variant="contained" color="primary" onClick={onDelete} className={classes.button}>
+        {!isStartingStoryPart && (
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={onSetStartingPart}
+            className={classes.button}
+          >
+            Set as starting part
+          </Button>
+        )}
+        <Button
+          variant="contained"
+          color="primary"
+          disabled={isStartingStoryPart}
+          onClick={isStartingStoryPart ? undefined : onDelete}
+          className={classes.button}
+        >
           Delete
         </Button>
+        {isStartingStoryPart && (
+          <Typography className={classes.title} color="textPrimary">
+            You cannot delete the starting story part, you must select another part to be the
+            starting part first
+          </Typography>
+        )}
       </div>
     </form>
   );
@@ -199,6 +224,7 @@ const mapDispatchToProps = (
 ): IDispatchProps => ({
   saveProp: (key, value) => dispatch(saveStoryPartProp(storyId, partId, key, value)),
   deletePart: () => dispatch(deleteStoryPart(storyId, partId)),
+  onSetStartingPart: () => dispatch(saveStoryProp(storyId, 'startingStoryPart', partId)),
 });
 
 export default withRouter(
