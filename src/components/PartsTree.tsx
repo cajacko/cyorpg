@@ -29,6 +29,18 @@ interface IProps extends IStateProps, RouteProps {
  */
 const PartsTree: React.FC<IProps> = ({ parts, heightOffset, bounds }: IProps) => {
   const layout = useLayout(bounds);
+  const archerContainer = React.useRef(null);
+
+  /**
+   * Test
+   */
+  const renderArrows = () => {
+    if (!archerContainer) return;
+    if (!archerContainer.current) return;
+
+    // @ts-ignore
+    archerContainer.current.refreshScreen();
+  };
 
   return (
     <div
@@ -44,7 +56,7 @@ const PartsTree: React.FC<IProps> = ({ parts, heightOffset, bounds }: IProps) =>
       <ArcherContainer
         strokeColor="#0e0e0e2e"
         strokeWidth={1}
-        ref={layout.archerContainer}
+        ref={archerContainer}
         arrowLength={5}
         style={{
           width: layout.width,
@@ -53,12 +65,14 @@ const PartsTree: React.FC<IProps> = ({ parts, heightOffset, bounds }: IProps) =>
           minHeight: '100%',
         }}
       >
-        <CustomDragLayer />
+        <CustomDragLayer boxHeight={layout.cardSize.height} boxWidth={layout.cardSize.width} />
         <Container
           parts={parts}
-          renderArrows={layout.renderArrows}
-          leftOffset={layout.leftOffset}
-          topOffset={layout.topOffset}
+          renderArrows={renderArrows}
+          boxHeight={layout.cardSize.height}
+          boxWidth={layout.cardSize.width}
+          getCoordinatesFromPosition={layout.getCoordinatesFromPosition}
+          getPositionFromCoordinates={layout.getPositionFromCoordinates}
         />
       </ArcherContainer>
     </div>

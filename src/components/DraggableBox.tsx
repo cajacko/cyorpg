@@ -31,6 +31,8 @@ export interface DraggableBoxProps {
   title: string;
   left: number;
   top: number;
+  height: number;
+  width: number;
 }
 
 /**
@@ -57,7 +59,9 @@ class DraggableBox extends React.PureComponent<DraggableBoxProps> {
    * Test
    */
   public render() {
-    const { title, connectDragSource, id } = this.props;
+    const {
+      title, connectDragSource, id, height, width,
+    } = this.props;
 
     return connectDragSource(
       <div style={getStyles(this.props)}>
@@ -74,7 +78,7 @@ class DraggableBox extends React.PureComponent<DraggableBoxProps> {
             },
           ]}
         >
-          <Box title={title} id={id} />
+          <Box title={title} id={id} height={height} width={width} />
         </ArcherElement>
       </div>
     );

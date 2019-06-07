@@ -143,7 +143,10 @@ const mapStateToProps = (
     content: '',
     actions: [],
     tree: {
-      position: {},
+      position: {
+        x: 0,
+        y: 0,
+      },
     },
   };
 

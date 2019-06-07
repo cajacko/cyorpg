@@ -114,7 +114,10 @@ const reducer = (state: IState = {}, action: Actions): IState => {
         content: '',
         actions: [],
         tree: {
-          position: {},
+          position: {
+            x: 0,
+            y: 0,
+          },
         },
       };
 
@@ -149,7 +152,10 @@ const reducer = (state: IState = {}, action: Actions): IState => {
         content: '',
         actions: [],
         tree: {
-          position: {},
+          position: {
+            x: 0,
+            y: 0,
+          },
         },
       };
 

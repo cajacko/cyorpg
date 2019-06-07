@@ -14,14 +14,10 @@ interface IAction2 {
 
 export type IAction = IAction1 | IAction2;
 
-type Position = | {
-      x: number;
-      y: number;
-    }
-  | {
-      x?: undefined;
-      y?: undefined;
-    };
+interface IPosition {
+  x: number;
+  y: number;
+}
 
 export interface IStoryPart {
   id: string;
@@ -30,7 +26,7 @@ export interface IStoryPart {
   content: string;
   actions: IAction[];
   tree: {
-    position: Position;
+    position: IPosition;
   };
 }
 

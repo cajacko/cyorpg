@@ -41,6 +41,8 @@ export interface CustomDragLayerProps {
   initialOffset?: XYCoord | null;
   currentOffset?: XYCoord | null;
   isDragging?: boolean;
+  boxWidth: number;
+  boxHeight: number;
 }
 
 /**
@@ -48,7 +50,7 @@ export interface CustomDragLayerProps {
  */
 const CustomDragLayer: React.FC<CustomDragLayerProps> = (props) => {
   // eslint-disable-next-line
-  const { item, itemType, isDragging } = props;
+  const { item, itemType, isDragging, boxWidth, boxHeight } = props;
 
   /**
    * Render
@@ -56,7 +58,9 @@ const CustomDragLayer: React.FC<CustomDragLayerProps> = (props) => {
   function renderItem() {
     switch (itemType) {
       case ItemTypes.BOX:
-        return <BoxDragPreview title={item.title} id={item.id} />;
+        return (
+          <BoxDragPreview title={item.title} id={item.id} width={boxWidth} height={boxHeight} />
+        );
       default:
         return null;
     }

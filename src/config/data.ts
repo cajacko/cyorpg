@@ -14,7 +14,10 @@ const defaultState: IState = {
         headline: 'Part 1',
         content: 'Content of stuff',
         tree: {
-          position: {},
+          position: {
+            x: 0,
+            y: 0,
+          },
         },
         actions: [
           {
@@ -37,7 +40,10 @@ const defaultState: IState = {
         headline: 'Part 2',
         content: 'Content of stuff',
         tree: {
-          position: {},
+          position: {
+            x: 0,
+            y: 0,
+          },
         },
         actions: [
           {
@@ -60,7 +66,10 @@ const defaultState: IState = {
         headline: 'Part 3',
         content: 'Content of stuff',
         tree: {
-          position: {},
+          position: {
+            x: 0,
+            y: 0,
+          },
         },
         actions: [
           {

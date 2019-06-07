@@ -18,15 +18,33 @@ interface IDispatchProps {
   setStoryPartPosition: (id: string, x: number, y: number) => void;
 }
 
-export interface ContainerProps {
+export interface IContainerProps {
   connectDropTarget: ConnectDropTarget;
   parts: IStoryParts;
   renderArrows: () => void;
-  leftOffset: number;
-  topOffset: number;
+  boxHeight: number;
+  boxWidth: number;
+  getPositionFromCoordinates: (props: {
+  targetWidth: number;
+  targetHeight: number;
+  x: number;
+  y: number;
+  }) => {
+    left: number;
+    top: number;
+  };
+  getCoordinatesFromPosition: (props: {
+  targetWidth: number;
+  targetHeight: number;
+  left: number;
+  top: number;
+  }) => {
+    x: number;
+    y: number;
+  };
 }
 
-interface IProps extends ContainerProps, IDispatchProps, RouteProps {}
+interface IProps extends IContainerProps, IDispatchProps, RouteProps {}
 
 /**
  * Test
@@ -36,7 +54,13 @@ class Container extends React.PureComponent<IProps> {
    * Test
    */
   public moveBox(id: string, left: number, top: number) {
-    this.props.setStoryPartPosition(id, left - this.props.leftOffset, top - this.props.topOffset);
+    const { x, y } = this.props.getCoordinatesFromPosition({
+      targetWidth: this.props.boxWidth,
+      targetHeight: this.props.boxHeight,
+      left,
+      top,
+    });
+    this.props.setStoryPartPosition(id, x, y);
     // Needed, as doesn't rerender otherwise, think react-dnd prevents rerender for some reason
     this.forceUpdate();
     this.props.renderArrows();
@@ -48,10 +72,24 @@ class Container extends React.PureComponent<IProps> {
   private renderBox(item: IStoryPart, key: string) {
     const { x, y } = item.tree.position;
 
-    const left = (x || 0) + this.props.leftOffset;
-    const top = (y || 0) + this.props.topOffset;
+    const { left, top } = this.props.getPositionFromCoordinates({
+      targetWidth: this.props.boxWidth,
+      targetHeight: this.props.boxHeight,
+      x,
+      y,
+    });
 
-    return <DraggableBox key={key} id={key} title={item.label} left={left} top={top} />;
+    return (
+      <DraggableBox
+        key={key}
+        id={key}
+        title={item.label}
+        left={left}
+        top={top}
+        height={this.props.boxHeight}
+        width={this.props.boxWidth}
+      />
+    );
   }
 
   /**
@@ -97,7 +135,7 @@ export default withRouter(
     DropTarget(
       ItemTypes.BOX,
       {
-        drop(props: ContainerProps, monitor: DropTargetMonitor, component: Container | null) {
+        drop(props: IContainerProps, monitor: DropTargetMonitor, component: Container | null) {
           if (!component) {
             return;
           }

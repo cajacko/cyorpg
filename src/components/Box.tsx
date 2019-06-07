@@ -5,6 +5,7 @@ const styles: React.CSSProperties = {
   border: '1px dashed gray',
   padding: '0.5rem 1rem',
   cursor: 'move',
+  boxSizing: 'border-box',
 };
 
 type RouteProps = RouteComponentProps<{
@@ -15,6 +16,8 @@ export interface BoxProps extends RouteProps {
   title: string;
   yellow?: boolean;
   id: string;
+  width: number;
+  height: number;
 }
 
 /**
@@ -28,16 +31,24 @@ const Box: React.FC<BoxProps> = ({
     params: { storyId },
   },
   id,
+  width,
+  height,
 }: BoxProps) => {
   const backgroundColor = yellow ? 'yellow' : 'white';
 
   return (
-    <div
-      style={{ ...styles, backgroundColor }}
+    <button
+      style={{
+        ...styles,
+        backgroundColor,
+        width,
+        height,
+      }}
       onClick={() => push(`/story/${storyId}/edit/part/${id}`)}
+      type="button"
     >
       {title}
-    </div>
+    </button>
   );
 };
 
