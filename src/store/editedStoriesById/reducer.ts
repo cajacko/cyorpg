@@ -36,6 +36,29 @@ const getBounds = (storyParts: IStory['storyParts']): IStory['bounds'] => {
 };
 
 /**
+ * Ensure the starting story is set correctly
+ */
+const ensureStartingStoryPart = (story: IStory): IStory => {
+  const noStartingStory: IStory = {
+    ...story,
+    startingStoryPart: 'null',
+  };
+
+  const storyPartIds = Object.keys(story.storyParts);
+
+  if (storyPartIds.length === 1) {
+    return {
+      ...story,
+      startingStoryPart: storyPartIds[0],
+    };
+  }
+
+  if (!story.storyParts[story.startingStoryPart]) return noStartingStory;
+
+  return story;
+};
+
+/**
  * Stories reducer
  */
 const reducer = (state: IState = {}, action: Actions): IState => {
@@ -90,7 +113,7 @@ const reducer = (state: IState = {}, action: Actions): IState => {
 
       return {
         ...state,
-        [storyId]: newStory,
+        [storyId]: ensureStartingStoryPart(newStory),
       };
     }
 
@@ -128,7 +151,7 @@ const reducer = (state: IState = {}, action: Actions): IState => {
 
       return {
         ...state,
-        [storyId]: newStory,
+        [storyId]: ensureStartingStoryPart(newStory),
       };
     }
 

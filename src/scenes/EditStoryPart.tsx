@@ -1,12 +1,17 @@
+/* eslint max-lines: 0 */
 import React from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import Typography from '@material-ui/core/Typography';
 import { saveStoryPartProp, deleteStoryPart } from '../store/storiesById/actions';
 import { Dispatch, IStoryPartProp, IStoryPart } from '../store/types';
 import { AppState } from '../store';
+import getIsStartingStoryPart from '../utils/getIsStartingStoryPart';
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
   container: {
@@ -28,6 +33,13 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
   button: {
     marginTop: 20,
   },
+  card: {
+    width: '100%',
+    margin: theme.spacing(2),
+  },
+  title: {
+    fontSize: 14,
+  },
 }));
 
 type RouteProps = RouteComponentProps<{
@@ -35,7 +47,9 @@ type RouteProps = RouteComponentProps<{
   partId: string;
 }>;
 
-type IStateProps = IStoryPart;
+interface IStateProps extends IStoryPart {
+  isStartingStoryPart: boolean;
+}
 
 interface IDispatchProps {
   saveProp: <P extends IStoryPartProp>(key: P, value: IStoryPart[P]) => void;
@@ -57,6 +71,7 @@ const EditStoryPart: React.FC<IProps> = ({
   headline,
   content,
   deletePart,
+  isStartingStoryPart,
 }: IProps) => {
   const classes = useStyles();
 
@@ -75,6 +90,15 @@ const EditStoryPart: React.FC<IProps> = ({
 
   return (
     <form className={classes.container} noValidate autoComplete="off">
+      {isStartingStoryPart && (
+        <Card className={classes.card}>
+          <CardContent>
+            <Typography className={classes.title} color="textPrimary">
+              Starting Story
+            </Typography>
+          </CardContent>
+        </Card>
+      )}
       <TextField
         value={label}
         onChange={handleChange('label')}
@@ -137,7 +161,10 @@ const mapStateToProps = (
 ): IStateProps => {
   const story = state.editedStoriesById[storyId] || state.storiesById[storyId];
 
+  const isStartingStoryPart = getIsStartingStoryPart(story, partId);
+
   const defaultPart: IStateProps = {
+    isStartingStoryPart,
     id: partId,
     label: '',
     content: '',
@@ -156,7 +183,7 @@ const mapStateToProps = (
 
   if (!part) return defaultPart;
 
-  return part;
+  return { ...part, isStartingStoryPart };
 };
 
 /**

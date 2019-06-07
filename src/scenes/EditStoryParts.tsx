@@ -1,6 +1,6 @@
 import React from 'react';
 import uuid from 'uuid';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { withRouter, RouteComponentProps, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import Fab from '@material-ui/core/Fab';
@@ -43,6 +43,8 @@ const EditStoryParts: React.FC<IProps> = ({
   },
 }: IProps) => {
   const classes = useStyles();
+
+  if (Object.keys(parts).length === 0) return <Redirect to={`/story/${storyId}/edit/part/${uuid()}`} />;
 
   return (
     <React.Fragment>
