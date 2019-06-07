@@ -14,7 +14,7 @@ interface IAction2 {
 
 export type IAction = IAction1 | IAction2;
 
-interface IPosition {
+export interface IPosition {
   x: number;
   y: number;
 }
@@ -63,6 +63,7 @@ export const SAVE_STORY = 'SAVE_STORY';
 export const DELETE_STORY = 'DELETE_STORY';
 export const DELETE_STORY_PART = 'DELETE_STORY_PART';
 export const SET_STORY_PART_POSITION = 'SET_STORY_PART_POSITION';
+export const SET_LAST_SCROLL = 'SET_LAST_SCROLL';
 
 export type IStoryProp = 'title' | 'description';
 export type IStoryPartProp = 'label' | 'headline' | 'content';
@@ -122,11 +123,20 @@ export interface ISetStoryPartPositionAction {
   };
 }
 
+export interface ISetLastScrollAction {
+  type: typeof SET_LAST_SCROLL;
+  payload: {
+    storyId: string;
+    scroll: IPosition;
+  };
+}
+
 export type Actions = | ISaveStoryPropAction<IStoryProp>
   | ISaveStoryAction
   | IDeleteStoryAction
   | ISaveStoryPartPropAction<IStoryPartProp>
   | IDeleteStoryPartAction
-  | ISetStoryPartPositionAction;
+  | ISetStoryPartPositionAction
+  | ISetLastScrollAction;
 
 export type Dispatch = RDispatch<Actions>;

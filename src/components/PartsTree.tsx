@@ -1,15 +1,17 @@
 import React from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
 import { DragDropContext } from 'react-dnd';
 // import HTML5Backend from 'react-dnd-html5-backend';
 import TouchBackend from 'react-dnd-touch-backend';
 import { ArcherContainer } from 'react-archer';
 import { AppState } from '../store';
-import { IStory, IStoryParts } from '../store/types';
+import { IStory, IStoryParts, IPosition } from '../store/types';
 import CustomDragLayer from './CustomDragLayer';
 import Container from './Container';
 import useLayout from '../hooks/useLayout';
+import { saveLastScroll } from '../store/lastScrollCoordinatesByStoryId/actions';
 
 type RouteProps = RouteComponentProps<{
   storyId: string;
@@ -17,9 +19,14 @@ type RouteProps = RouteComponentProps<{
 
 interface IStateProps {
   bounds: IStory['bounds'];
+  lastScroll?: IPosition;
 }
 
-interface IProps extends IStateProps, RouteProps {
+interface IDispatchProps {
+  saveScroll: (scroll: IPosition) => void;
+}
+
+interface IProps extends IStateProps, RouteProps, IDispatchProps {
   parts: IStoryParts;
   heightOffset: number;
 }
@@ -27,8 +34,14 @@ interface IProps extends IStateProps, RouteProps {
 /**
  * Test
  */
-const PartsTree: React.FC<IProps> = ({ parts, heightOffset, bounds }: IProps) => {
-  const layout = useLayout(bounds);
+const PartsTree: React.FC<IProps> = ({
+  parts,
+  heightOffset,
+  bounds,
+  saveScroll,
+  lastScroll,
+}: IProps) => {
+  const layout = useLayout(bounds, saveScroll, lastScroll);
   const archerContainer = React.useRef(null);
 
   /**
@@ -82,21 +95,43 @@ const PartsTree: React.FC<IProps> = ({ parts, heightOffset, bounds }: IProps) =>
 /**
  * Test
  */
-const mapStateToProps = (state: AppState, props: RouteProps): IStateProps => {
-  const story = state.editedStoriesById[props.match.params.storyId];
+const mapStateToProps = (
+  state: AppState,
+  {
+    match: {
+      params: { storyId },
+    },
+  }: RouteProps
+): IStateProps => {
+  const story = state.editedStoriesById[storyId];
+  const lastScroll = state.lastScrollCoordinatesByStoryId[storyId];
 
   const defaultState = {
     bounds: {},
+    lastScroll,
   };
 
   if (!story) return defaultState;
 
   return {
     bounds: story.bounds,
+    lastScroll,
   };
 };
 
+/**
+ * Test
+ */
+const mapDispatchToProps = (dispatch: Dispatch, props: RouteProps): IDispatchProps => ({
+  saveScroll: scroll => dispatch(saveLastScroll(props.match.params.storyId, scroll)),
+});
+
 // @ts-ignore
 export default DragDropContext(TouchBackend({ enableMouseEvents: true }))(
-  withRouter(connect(mapStateToProps)(PartsTree))
+  withRouter(
+    connect(
+      mapStateToProps,
+      mapDispatchToProps
+    )(PartsTree)
+  )
 );

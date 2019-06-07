@@ -140,7 +140,11 @@ const scrollPositions: {
 /**
  * Use layout
  */
-const useLayout = (bounds: IStory['bounds'], lastScroll?: ICoordinates) => {
+const useLayout = (
+  bounds: IStory['bounds'],
+  saveScroll: (scroll: ICoordinates) => void,
+  lastScroll?: ICoordinates
+) => {
   const scrollContainer = React.useRef<HTMLDivElement>(null);
 
   const [id] = React.useState(() => {
@@ -181,37 +185,44 @@ const useLayout = (bounds: IStory['bounds'], lastScroll?: ICoordinates) => {
   React.useEffect(() => {
     const ref = scrollContainer.current;
 
-    if (!ref) return;
+    if (ref) {
+      const coordinates = scrollPositions[id] || lastScroll;
 
-    const coordinates = scrollPositions[id] || lastScroll;
+      if (coordinates) {
+        ref.scroll(
+          getPositionFromCoordinates({
+            targetWidth: ref.clientWidth,
+            targetHeight: ref.clientHeight,
+            x: coordinates.x,
+            y: coordinates.y,
+          })
+        );
+      } else {
+        // No coordinates to scroll to, so scroll to the middle
 
-    if (coordinates) {
-      ref.scroll(
-        getPositionFromCoordinates({
-          targetWidth: ref.clientWidth,
-          targetHeight: ref.clientHeight,
-          x: coordinates.x,
-          y: coordinates.y,
-        })
-      );
+        const midTop = containerProps.height / 2;
+        const midLeft = containerProps.width / 2;
 
-      return;
+        const halfScrollContainerWidth = ref.clientWidth / 2;
+        const halfScrollContainerHeight = ref.clientHeight / 2;
+
+        const scroll = {
+          left: midLeft - halfScrollContainerWidth,
+          top: midTop - halfScrollContainerHeight,
+        };
+
+        ref.scroll(scroll);
+      }
     }
 
-    // No coordinates to scroll to, so scroll to the middle
+    /**
+     * On unmount, save the scroll position for next time
+     */
+    return () => {
+      const coord = scrollPositions[id];
 
-    const midTop = containerProps.height / 2;
-    const midLeft = containerProps.width / 2;
-
-    const halfScrollContainerWidth = ref.clientWidth / 2;
-    const halfScrollContainerHeight = ref.clientHeight / 2;
-
-    const scroll = {
-      left: midLeft - halfScrollContainerWidth,
-      top: midTop - halfScrollContainerHeight,
+      if (coord) saveScroll(coord);
     };
-
-    ref.scroll(scroll);
   });
 
   return {
