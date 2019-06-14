@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.js": "/cyorpg/static/js/main.1565bb34.chunk.js",
+    "main.js.map": "/cyorpg/static/js/main.1565bb34.chunk.js.map",
+    "runtime~main.js": "/cyorpg/static/js/runtime~main.977dd40e.js",
+    "runtime~main.js.map": "/cyorpg/static/js/runtime~main.977dd40e.js.map",
+    "static/js/2.3aeea929.chunk.js": "/cyorpg/static/js/2.3aeea929.chunk.js",
+    "static/js/2.3aeea929.chunk.js.map": "/cyorpg/static/js/2.3aeea929.chunk.js.map",
+    "index.html": "/cyorpg/index.html",
+    "precache-manifest.a2e6a0605ea19ade04eee5a8ecfe3757.js": "/cyorpg/precache-manifest.a2e6a0605ea19ade04eee5a8ecfe3757.js",
+    "service-worker.js": "/cyorpg/service-worker.js"
+  }
+}
