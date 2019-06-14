@@ -2,6 +2,7 @@
   "name": "init",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://cajacko.github.io/cyorpg",
   "dependencies": {
     "@material-ui/core": "^4.0.0",
     "@material-ui/icons": "^4.0.0",
@@ -11,6 +12,7 @@
     "@types/react-dom": "16.8.4",
     "@types/react-router-dom": "^4.3.3",
     "dnd-core": "^7.4.4",
+    "gh-pages": "^2.0.1",
     "immutability-helper": "^3.0.0",
     "react": "^16.8.6",
     "react-archer": "^1.1.0",
@@ -30,6 +32,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "predeploy": "yarn run build",
+    "deploy": "gh-pages -d build",
     "test": "react-scripts test",
     "eslint": "eslint --ext .js,.jsx,.ts,.tsx src",
     "tslint": "tslint 'src/**/*.ts*'",
