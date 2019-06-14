@@ -1,5 +1,6 @@
 import React from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import CssBaseline from '@material-ui/core/CssBaseline';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -9,6 +10,10 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import AppBar from '@material-ui/core/AppBar';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import emojis from '../config/emojis';
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
   fab: {
@@ -63,13 +68,19 @@ const App: React.FC = () => {
   const [emotions, setEmotions] = React.useState<string[]>([]);
   const [showInput, setShowInput] = React.useState(false);
   const [inputValue, setInputValue] = React.useState('');
+  const [value, setValue] = React.useState(0);
   const classes = useStyles();
 
   /**
    * Set a random emotion
    */
-  const setRandEmotion = (emotionsArg?: string[]) => {
-    const arr = emotionsArg || emotions;
+  const setRandEmotion = (emotionsArg?: string[], valueArg?: number) => {
+    let arr = emotionsArg || emotions;
+
+    if (valueArg === 1 || value === 1) {
+      arr = emojis;
+    }
+
     let rand = arr[Math.floor(Math.random() * arr.length)];
 
     if (arr.length > 1) {
@@ -138,49 +149,75 @@ const App: React.FC = () => {
   }, []);
 
   return (
-    <div className={classes.container}>
-      <p className={classes.emotion}>{emotion}</p>
-      <Fab color="primary" aria-label="Add" className={classes.delete} onClick={deleteEmotion}>
-        <DeleteIcon />
-      </Fab>
-      <Button className={classes.button} variant="contained" onClick={() => setRandEmotion()}>
-        Reload
-      </Button>
-      <Fab
-        color="primary"
-        aria-label="Add"
-        className={classes.fab}
-        onClick={() => setShowInput(true)}
-      >
-        <AddIcon />
-      </Fab>
-      <Dialog
-        open={showInput}
-        onClose={() => setShowInput(false)}
-        aria-labelledby="form-dialog-title"
-      >
-        <DialogTitle id="form-dialog-title">Add an Emotion</DialogTitle>
-        <DialogContent>
-          <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            label="Emotion"
-            fullWidth
-            value={inputValue}
-            onChange={event => setInputValue(event.target.value)}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setShowInput(false)} color="primary">
-            Cancel
-          </Button>
-          <Button onClick={setRemoteEmotions} color="primary">
-            Add
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </div>
+    <React.Fragment>
+      <CssBaseline />
+      <AppBar position="static">
+        <Tabs
+          value={value}
+          onChange={(_, newValue) => {
+            setValue(newValue);
+            setRandEmotion(undefined, newValue);
+          }}
+        >
+          <Tab label="Emotions" />
+          <Tab label="Emojis" />
+        </Tabs>
+      </AppBar>
+      <div className={classes.container}>
+        <p
+          style={{
+            fontSize: value === 1 ? 150 : undefined,
+          }}
+          className={classes.emotion}
+        >
+          {emotion}
+        </p>
+        {value === 0 && (
+          <Fab color="primary" aria-label="Add" className={classes.delete} onClick={deleteEmotion}>
+            <DeleteIcon />
+          </Fab>
+        )}
+        <Button className={classes.button} variant="contained" onClick={() => setRandEmotion()}>
+          Reload
+        </Button>
+        {value === 0 && (
+          <Fab
+            color="primary"
+            aria-label="Add"
+            className={classes.fab}
+            onClick={() => setShowInput(true)}
+          >
+            <AddIcon />
+          </Fab>
+        )}
+        <Dialog
+          open={showInput}
+          onClose={() => setShowInput(false)}
+          aria-labelledby="form-dialog-title"
+        >
+          <DialogTitle id="form-dialog-title">Add an Emotion</DialogTitle>
+          <DialogContent>
+            <TextField
+              autoFocus
+              margin="dense"
+              id="name"
+              label="Emotion"
+              fullWidth
+              value={inputValue}
+              onChange={event => setInputValue(event.target.value)}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setShowInput(false)} color="primary">
+              Cancel
+            </Button>
+            <Button onClick={setRemoteEmotions} color="primary">
+              Add
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </div>
+    </React.Fragment>
   );
 };
 
