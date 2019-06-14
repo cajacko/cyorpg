@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/cyorpg/precache-manifest.2fcee8462774ca88f6c4dba116d67388.js"
+  "/cyorpg/precache-manifest.7bdf673c3032335b58724c86ef0eab6a.js"
 );
 
 self.addEventListener('message', (event) => {
