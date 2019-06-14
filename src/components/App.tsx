@@ -17,6 +17,11 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     bottom: 0,
     right: 0,
   },
+  button: {
+    margin: theme.spacing(4),
+    position: 'absolute',
+    bottom: 0,
+  },
   delete: {
     margin: theme.spacing(2),
     position: 'absolute',
@@ -65,7 +70,13 @@ const App: React.FC = () => {
    */
   const setRandEmotion = (emotionsArg?: string[]) => {
     const arr = emotionsArg || emotions;
-    const rand = arr[Math.floor(Math.random() * arr.length)];
+    let rand = arr[Math.floor(Math.random() * arr.length)];
+
+    if (arr.length > 1) {
+      while (rand === emotion) {
+        rand = arr[Math.floor(Math.random() * arr.length)];
+      }
+    }
 
     setEmotion(rand || 'No emotion to set');
   };
@@ -132,6 +143,9 @@ const App: React.FC = () => {
       <Fab color="primary" aria-label="Add" className={classes.delete} onClick={deleteEmotion}>
         <DeleteIcon />
       </Fab>
+      <Button className={classes.button} variant="contained" onClick={() => setRandEmotion()}>
+        Reload
+      </Button>
       <Fab
         color="primary"
         aria-label="Add"
